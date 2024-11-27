@@ -1,0 +1,134 @@
+.profileHeader {
+  max-width: 1000px; /* Genişlik artırıldı */
+  margin: 20px auto;
+  text-align: center;
+}
+
+.profileContainer {
+  display: flex;
+  max-width: 1000px; /* Genişlik artırıldı */
+  margin: 0 auto;
+  padding: 20px 60px; /* Sağ ve sol boşluk artırıldı */
+  gap: 60px; /* Aradaki boşluk artırıldı */
+}
+
+.profileDetails {
+  flex: 1;
+  border-right: 1px solid #ccc;
+  padding-right: 100px; /* Sağ boşluk artırıldı */
+}
+
+.profilePicture {
+  width: 180px; /* Resim boyutu artırıldı */
+  height: 180px;
+  border-radius: 50%;
+  margin-bottom: 20px;
+}
+
+.userInfo p {
+  margin: 10px 0; /* Her bir bilgi arasında boşluk artırıldı */
+}
+
+.editProfileButton {
+  display: block;
+  margin-top: 20px;
+  padding: 12px 20px; /* Buton boyutu büyütüldü */
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.editProfileButton:hover {
+  background-color: #0056b3;
+}
+
+.userEvents {
+  flex: 2;
+  padding-left: 100px; /* Sol boşluk artırıldı */
+}
+
+.eventList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Etkinlikler arası boşluk artırıldı */
+  margin-top: 10px;
+}
+
+.eventItem {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.eventItem:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.eventItem h3 {
+  margin: 0 0 10px;
+  color: #007bff;
+  font-size: 18px;
+}
+
+.eventItem p {
+  margin: 5px 0;
+  color: #333;
+}
+
+.eventList a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.eventList a:hover {
+  text-decoration: underline;
+}
+
+.eventAddButton {
+  margin-top: 20px;
+}
+
+.eventAddButton button {
+  padding: 12px 20px; /* Buton boyutu büyütüldü */
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.eventAddButton button:hover {
+  background-color: #218838;
+}
+
+/* Yeni Etkinlik İçin CSS */
+.eventDate {
+  font-weight: bold;
+  color: #555;
+  margin-top: 5px;
+}
+
+.eventDescription {
+  font-style: italic;
+  color: #777;
+  margin-top: 5px;
+}
+
+.eventSubcategory {
+  color: #333;
+  margin-top: 10px;
+}
+
+.userPoints {
+  margin: 20px 0;
+  padding: 15px;
+  border: 1px solid #ddd;
+  background: #f9f9f9;
+  border-radius: 5px;
+}

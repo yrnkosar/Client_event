@@ -1,0 +1,105 @@
+.header {
+  max-width: 1800px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+.pointsDisplay {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pointsIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+}
+
+.nav.open {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 60px;
+  right: 10px;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.link {
+  margin-left: 20px;
+  text-decoration: none;
+  color: black;
+}
+
+.active {
+  color: blue;
+}
+
+.notificationButton {
+  margin-left: 20px;
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.notificationsDropdown {
+  position: absolute;
+  top: 60px;
+  right: 10px;
+  width: 200px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.burgerButton {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* 1920px altında genişlik ayarları */
+@media (max-width: 1920px) {
+  .header {
+    padding: 0 20px;
+  }
+
+  .burgerButton {
+    display: none;
+  }
+}
+
+/* Daha küçük ekranlarda burger menü gösterimi */
+@media (max-width: 768px) {
+  .nav {
+    display: none;
+  }
+
+  .nav.open {
+    display: flex;
+  }
+
+  .burgerButton {
+    display: block;
+  }
+}

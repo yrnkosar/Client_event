@@ -1,0 +1,26 @@
+// src/utils/nominatimAPI.js
+import axios from 'axios';
+
+// Adres -> Koordinat
+export const adresToKoordinat = async (adres) => {
+  const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(adres)}&format=json&addressdetails=1&limit=1`;
+  try {
+    const response = await axios.get(url);
+    return response.data[0];
+  } catch (error) {
+    console.error("Geocoding hatası:", error);
+    return null;
+  }
+};
+
+// Koordinat -> Adres
+export const koordinatToAdres = async (lat, lon) => {
+  const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&addressdetails=1`;
+  try {
+    const response = await axios.get(url);
+    return response.data;
+  } catch (error) {
+    console.error("Reverse Geocoding hatası:", error);
+    return null;
+  }
+};

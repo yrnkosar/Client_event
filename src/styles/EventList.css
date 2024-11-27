@@ -1,0 +1,23 @@
+/* EventList.css */
+.event-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .event-item {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  .event-item h3 {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+  
+  .event-item p {
+    margin: 5px 0;
+  }
