@@ -145,6 +145,15 @@ const Profile = () => {
                 Etkinlik Oluştur
               </button>
             </div>
+
+            <div className={styles.addInterestButtonContainer}>
+  <button
+    className={styles.addInterestButton}
+    onClick={() => navigate('/select-interests')}
+  >
+    İlgi Alanı Ekle
+  </button>
+</div>
               {/* Katıldığı Etkinlikler */}
             <div className={styles.userEvents}>
               <h3>Katıldığınız Etkinlikler</h3>

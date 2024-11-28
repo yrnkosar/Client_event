@@ -17,6 +17,7 @@ import EventListPage from './pages/EventListPage.jsx';
 import ResetPasswordLink from './components/ResetPasswordLink.jsx';
 import ResetPassword from './pages/ResetPassword.jsx';
 import ProfileEditForm from './components/ProfileEditForm.jsx';
+import SelectInterests from './pages/SelectInterests.jsx';
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
           <Route path="/reset-password-link" element={<ResetPasswordLink />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/profile/edit" element={<ProfileEditForm />} />
+          <Route path="/select-interests" element={<SelectInterests />} />
          </Routes>
       </Router>
     </AuthProvider>

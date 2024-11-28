@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link,useNavigate} from 'react-router-dom';
 import Chat from '../components/Chat.jsx';
 import { useAuth} from '../AuthContext.jsx';
 
 function EventDetail() {
   const { id } = useParams();
+  const navigate = useNavigate(); // Yönlendirme için useNavigate
   const [event, setEvent] = useState(null);
   const [showChat, setShowChat] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false); // Formu açıp kapatmak için state
@@ -52,10 +53,9 @@ function EventDetail() {
 
         const data = await response.json();
         setParticipants(data);
-
-        // Kullanıcının etkinlikte katılımcı olup olmadığını kontrol et
         const isUserParticipant = data.some((participant) => participant.user_id === user.id);
         setIsParticipant(isUserParticipant);
+     
       } catch (err) {
         console.error(err.message);
       }
@@ -91,10 +91,13 @@ function EventDetail() {
             if (userResponse.ok) {
               const userData = await userResponse.json();
               const totalPoints = userData.points.reduce((total, item) => total + item.points, 0);
-              setUserPoints(totalPoints); // Güncel puanları global state'e set et
+              setUserPoints(totalPoints);  
+              navigate('/profile');// Güncel puanları global state'e set et
           } else {
               console.error("Puanlar alınamadı");
           }
+          // Profil sayfasına yönlendir
+       
       } else {
           console.error('Katılma başarısız', await response.text());
       }
@@ -102,14 +105,34 @@ function EventDetail() {
       console.error("Katılma işlemi sırasında hata:", error);
   }
 };
-  const handleJoinChat = () => {
-    alert("Sohbet odasına yönlendiriliyorsunuz...");
-    setShowChat(true);
-  };
+const handleDeleteEvent = async () => {
+  const confirmDelete = window.confirm('Bu etkinliği silmek istediğinizden emin misiniz?');
+  if (confirmDelete) {
+    try {
+      const response = await fetch(`http://localhost:3000/api/event/delete-event/${id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
 
-  const toggleEditForm = () => {
-    setShowEditForm(!showEditForm); // Formu açıp kapatmak
-  };
+      if (response.ok) {
+        console.log("Etkinlik başarıyla silindi");
+        navigate('/profile'); // Etkinlik silindikten sonra profil sayfasına yönlendir
+      } else {
+        console.error('Etkinlik silinirken hata:', await response.text());
+      }
+    } catch (error) {
+      console.error("Etkinlik silinirken hata:", error);
+    }
+  }
+};
+
+const handleJoinChat = () => {
+  alert("Sohbet odasına yönlendiriliyorsunuz...");
+  setShowChat(true);
+};
+  const toggleEditForm = () => setShowEditForm((prev) => !prev);
 
   const handleSaveEdit = async (updatedEvent) => {
     try {
@@ -125,18 +148,18 @@ function EventDetail() {
       if (!response.ok) {
         throw new Error("Etkinlik güncellenemedi.");
       }
-
-      const data = await response.json();
-      console.log('Etkinlik başarıyla güncellendi:', data);
-      setEvent(data); 
+      navigate('/profile');
+      const updatedData = await response.json();
+      setEvent(updatedData);
+      console.log('Etkinlik başarıyla güncellendi:', updatedData);
       setShowEditForm(false); 
+        
     } catch (error) {
       console.error("Etkinlik güncellenirken hata:", error);
     }
   };
 
-  if (!event) return <p>Yükleniyor...</p>;
-  //if (!event) return <p>Etkinlik detayları yükleniyor...</p>;
+    if (!event) return <p>Etkinlik detayları yükleniyor...</p>;
   const isOwner = user?.id === event.user_id; // Kullanıcının etkinlik sahibi olup olmadığını kontrol ediyoruz
 
   return (
@@ -151,13 +174,23 @@ function EventDetail() {
       <p><strong>Konum:</strong> Latitude: {event.latitude}, Longitude: {event.longitude}</p>
       <p><strong>Kategori:</strong> {event.Subcategory?.name}</p>
       {/* Etkinlik sahibi kontrolü */}
+   
       {isOwner && (
-        <button onClick={toggleEditForm} style={styles.editButton}>
-          {showEditForm ? "İptal Et" : "Düzenle"}
-        </button>
+        <>
+          <button onClick={toggleEditForm} style={styles.editButton}>
+            {showEditForm ? "İptal Et" : "Düzenle"}
+          </button>
+          <button onClick={handleDeleteEvent} style={styles.deleteButton}>Sil</button>
+        </>
       )}
+      
       {showEditForm && (
         <EventEditForm event={event} onSave={handleSaveEdit} />
+      )}
+ {isParticipant && !showChat && (
+        <button onClick={handleJoinChat} style={styles.chatButton}>
+          Sohbete Katıl
+        </button>
       )}
 
 {!isParticipant ? (
@@ -182,23 +215,28 @@ const EventEditForm = ({ event, onSave }) => {
     konum:  `Latitude: ${event.latitude}, Longitude: ${event.longitude}`,
     kategori: event.Subcategory?.name,
   });
-  
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-     // Alanların boş olup olmadığını kontrol et
-  if (!formData.etkinlikAdi || !formData.aciklama || !formData.tarih || !formData.saat || !formData.sure || !formData.konum || !formData.kategori) {
-    alert("Lütfen tüm alanları doldurduğunuzdan emin olun.");
-    return;
-  }
-    onSave(formData); // Değişiklikleri kaydet
+    if (Object.values(formData).some((field) => !field)) {
+      alert('Lütfen tüm alanları doldurun.');
+      return;
+    }
+    const updatedEvent = {
+      name: formData.etkinlikAdi,
+      description: formData.aciklama,
+      date: formData.tarih,
+      time: formData.saat,
+      duration: formData.sure,
+      latitude: parseFloat(event.latitude), // Latitude'i doğru formatta gönderin
+      longitude: parseFloat(event.longitude), // Longitude'i doğru formatta gönderin
+      subcategory_id: event.Subcategory?.id, // Backend'in beklediği ID'yi ekleyin   
+    };
+    onSave(updatedEvent);
   };
 
   return (

@@ -77,8 +77,11 @@ const Register = () => {
       });
   
       if (response.ok) {
+        const data = await response.json();
+
+      
         console.log("Registration successful");
-        navigate('/'); // Başarılı kayıt sonrası login sayfasına yönlendirme
+        navigate('/'); // İlgi alanı seçme sayfasına yönlendirme
       } else {
         const errorData = await response.json();
         console.error("Registration failed:", errorData.message);

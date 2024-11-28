@@ -1,10 +1,13 @@
 import React, { useState , useEffect} from 'react';
 import '../styles/EventAdd.css';
 import { useAuth } from '../AuthContext'; 
+import { useNavigate } from 'react-router-dom'; // Importing useNavigate
+import SuccessModal from '../components/SuccessModal'; // Modal bileşenini içeri aktarın
 
 
 const EventAdd = () => {
   const { authToken } = useAuth(); // Fetching the authToken to get the user info
+  const navigate = useNavigate(); // For navigation
   const [eventData, setEventData] = useState({
     title: '',
     description: '',
@@ -18,17 +21,22 @@ const EventAdd = () => {
   });
 
   const [categories, setCategories] = useState([]); // To store the fetched categories
+  const [showSuccessModal, setShowSuccessModal] = useState(false); // For showing the success modal
+ 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setEventData({
-      ...eventData,
-      [name]: value,
-    });
+    setEventData({ ...eventData, [name]: value });
   };
+
+  const handleModalClose = () => {
+    setShowSuccessModal(false);
+    navigate('/profile');
+  };
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/admin/subcategories', {
+        const response = await fetch('http://localhost:3000/api/event/subcategories', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${authToken}`,
@@ -50,10 +58,8 @@ const EventAdd = () => {
     e.preventDefault();
   
     if (eventData.location) {
-      // Adresi koordinata dönüştürme
       const coordinates = await getCoordinates(eventData.location);
       if (coordinates) {
-        // Koordinatları state'e ekle
         setEventData({
           ...eventData,
           latitude: coordinates.lat,
@@ -80,9 +86,7 @@ const EventAdd = () => {
         });
   
         if (response.ok) {
-          const data = await response.json();
-          alert('Etkinlik başarıyla oluşturuldu!');
-          console.log(data);
+          setShowSuccessModal(true);
         } else {
           alert('Etkinlik oluşturulurken hata oluştu');
         }
@@ -113,7 +117,7 @@ const EventAdd = () => {
       return null;
     }
   };
-
+  
   return (
     <div className="event-add-container">
       <h2>Yeni Etkinlik Ekle</h2>
@@ -223,6 +227,13 @@ const EventAdd = () => {
           </div>
         )}
       </form>
+ {/* Modal */}
+       <SuccessModal
+        isVisible={showSuccessModal}
+        onClose={handleModalClose}
+        message="Etkinlik başarıyla oluşturuldu!"
+      />
+
     </div>
   );
 };
