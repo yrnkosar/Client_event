@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../AuthContext.jsx';
+import jwtDecode from 'jwt-decode';
 
 const Login = () => {
   const { setAuthToken } = useAuth(); // Assuming you manage auth token in context
@@ -34,7 +35,19 @@ const Login = () => {
   
       setAuthToken(data.token);  // Eğer token varsa
       localStorage.setItem('authToken', data.token); // Token'ı localStorage'a kaydet
-      navigate('/home');  // Başarıyla giriş yapıldığında yönlendir
+       // Token'dan rolü çözümle
+    const decodedToken = jwtDecode(data.token);
+    console.log('Decoded Token:', decodedToken);
+
+    if (decodedToken.role === 'admin') {
+      navigate('/admin');
+    } else if (decodedToken.role === 'kullanıcı') {
+      navigate('/home');
+    } else {
+      setError('Role not recognized.');
+    }
+
+
   
     } catch (error) {
       console.error('Request failed:', error); // Ağ hatası

@@ -3,6 +3,9 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import styles from '../styles/Header.module.css';
 import { useAuth } from '../AuthContext.jsx';
 import logo from '../assets/images.png'; // Logo dosyasını içeri aktarın
+import NotificationComponent from './NotificationComponent'; // Yeni bildirim component'ini import ediyoruz
+
+
 const Header = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -71,17 +74,20 @@ const Header = () => {
         <button className={styles.link} onClick={handleLogout}>
           Logout
         </button>
+  
+        {/* Bildirim butonunu burada tutuyoruz */}
         <button className={styles.notificationButton} onClick={toggleNotifications}>
           Notifications
         </button>
 
-        {/* Notifications Dropdown */}
+        {/* Bildirim dropdown menüsü */}
         {showNotifications && (
           <div className={styles.notificationsDropdown}>
-            <p>You have new messages!</p>
+            <NotificationComponent /> {/* NotificationComponent burada gösteriliyor */}
           </div>
         )}
       </nav>
+
       {/* Kullanıcı puanlarını göster */}
       {!isAdmin && ( // Adminler için puan göstergesi kapalı
         <div className={styles.pointsDisplay}>

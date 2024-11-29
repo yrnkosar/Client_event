@@ -1,0 +1,35 @@
+.notificationContainer {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .notification {
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: #fff;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+  }
+  
+  .notificationHeader {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .eventName {
+    color: #007bff;
+  }
+  
+  .notification p {
+    font-size: 14px;
+    margin: 5px 0;
+    color: #555;
+  }
+  
+  .notification small {
+    color: #888;
+    font-size: 12px;
+  }
+  
