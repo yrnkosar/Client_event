@@ -4,7 +4,7 @@ import { useAuth } from '../AuthContext';
 const UserPoints = () => {
   const [points, setPoints] = useState([]);
   const [error, setError] = useState(null);
-  const { user, authToken, userPoints, setUserPoints} = useAuth();
+  const { user, authToken, userPoints, setUserPoints, role } = useAuth();
 
   // Etkinlik katılımı sonrası puanları güncellemek için fonksiyon
   const fetchPoints = async () => {
@@ -36,22 +36,27 @@ const UserPoints = () => {
 
   // useEffect ile puanları çağır
   useEffect(() => {
-    if (user && authToken) {
+    if (user && authToken&& role !== 'admin') {
       fetchPoints();
     }
-  }, [user, authToken, setUserPoints]);
+  }, [user, authToken,role, setUserPoints]);
 
   return (
     <div className="user-points">
-    <h2>Your Points</h2>
-    {error && <p className="error">{error}</p>}
-    {userPoints !== null ? (
-      <p>Total Points: {userPoints}</p>
-    ) : (
-      <p>Loading..</p>
-    )}
-  </div>
-);
+      <h2>Your Points</h2>
+      {role === 'admin' ? (
+        <p>Admins do not have points.</p>
+      ) : (
+        <>
+          {error && <p className="error">{error}</p>}
+          {userPoints !== null ? (
+            <p>Total Points: {userPoints}</p>
+          ) : (
+            <p>Loading...</p>
+          )}
+        </>
+      )}
+    </div>
+  );
 };
-
 export default UserPoints;

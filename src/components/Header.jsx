@@ -82,15 +82,25 @@ const Header = () => {
           </div>
         )}
       </nav>
-      {/* Display user points */}
-      <div className={styles.pointsDisplay}>
-      <img
-  src={logo}
-  alt="Points"
-  className={styles.pointsIcon}
-/>
-        {userPoints !== null ? <span>{userPoints} Points</span> : <span>Loading...</span>}
-      </div>
+      {/* Kullanıcı puanlarını göster */}
+      {!isAdmin && ( // Adminler için puan göstergesi kapalı
+        <div className={styles.pointsDisplay}>
+          <img src={logo} alt="Points" className={styles.pointsIcon} />
+          {userPoints !== null ? (
+            <span>{userPoints} Points</span>
+          ) : (
+            <span>Loading...</span>
+          )}
+        </div>
+      )}
+
+      {/* Adminlere özel mesaj */}
+      {isAdmin && (
+        <div className={styles.pointsDisplay}>
+          <img src={logo} alt="Admin" className={styles.pointsIcon} />
+          <span>Admin users do not have points.</span>
+        </div>
+      )}
       {/* Hamburger menu for mobile view */}
       <button className={styles.burgerButton} onClick={toggleMenu}>
         ☰
