@@ -13,7 +13,8 @@ function EventDetail() {
   const [participants, setParticipants] = useState([]);
   const [isParticipant, setIsParticipant] = useState(false);
   const [joined, setJoined] = useState(false);  // Declare the 'joined' state
-  
+  const [joinError, setJoinError] = useState(null); // State for error message
+
   useEffect(() => {
     // Eğer user veya authToken yoksa, hata almamak için fonksiyonu sonlandır
     if (!user || !authToken) {
@@ -96,10 +97,15 @@ function EventDetail() {
           } else {
               console.error("Puanlar alınamadı");
           }
-          // Profil sayfasına yönlendir
        
       } else {
-          console.error('Katılma başarısız', await response.text());
+        const errorText = await response.text();
+        if (errorText.includes('You cannot join this event because it overlaps with')) {
+          const overlappingEventName = errorText.split(': ')[1];
+          setJoinError(`Bu etkinliğe katılamazsınız çünkü başka bir etkinlikle çakışıyor: ${overlappingEventName}`);
+        } else {
+          console.error('Katılma başarısız', errorText);
+        }
       }
   } catch (error) {
       console.error("Katılma işlemi sırasında hata:", error);
@@ -187,19 +193,22 @@ const handleJoinChat = () => {
       {showEditForm && (
         <EventEditForm event={event} onSave={handleSaveEdit} />
       )}
- {isParticipant && !showChat && (
+
+      {isParticipant && !showChat && (
         <button onClick={handleJoinChat} style={styles.chatButton}>
           Sohbete Katıl
         </button>
       )}
 
-{!isParticipant ? (
-        <button onClick={handleJoinEvent} style={styles.joinButton}>Katıl</button>
-      ) : (
-        <Link to={`/chat/${id}`} style={styles.chatButton}>Sohbete Katıl</Link>
+      {!isParticipant && (
+        <button onClick={handleJoinEvent} style={styles.joinButton}>
+          Katıl
+        </button>
       )}
 
       <Link to="/home" style={styles.link}>Ana Sayfaya Dön</Link>
+    
+      {showChat && <Chat eventId={id} />}
     </div>
   );
 }

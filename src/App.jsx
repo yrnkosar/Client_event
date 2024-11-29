@@ -18,6 +18,9 @@ import ResetPasswordLink from './components/ResetPasswordLink.jsx';
 import ResetPassword from './pages/ResetPassword.jsx';
 import ProfileEditForm from './components/ProfileEditForm.jsx';
 import SelectInterests from './pages/SelectInterests.jsx';
+import CategoryPage from './pages/CategoryPage'; // Kategori ekleme sayfasını dahil ettik
+import ReportsPage from './pages/ReportsPage'; // Aynı şekilde raporlar vb.
+import Chat from './components/Chat';
 
 function App() {
   return (
@@ -25,7 +28,8 @@ function App() {
       <Router>
       
         <Routes>
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<Login />} /> 
+          <Route path="/chat/:id" element={<Chat />} />
           <Route path="/home" element={<Home />} />
           <Route path="/event/:id" element={<EventDetail />} />
           <Route path="/profile" element={<Profile />} />
@@ -41,6 +45,8 @@ function App() {
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/profile/edit" element={<ProfileEditForm />} />
           <Route path="/select-interests" element={<SelectInterests />} />
+          <Route path="/admin/categories" element={<CategoryPage />} />
+          <Route path="/admin/reports" element={<ReportsPage />} />
          </Routes>
       </Router>
     </AuthProvider>

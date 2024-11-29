@@ -15,8 +15,8 @@ function PendingEvents({ events = [], onApprove, onDelete }) {
           {events.map(event => (
             <li key={event.id} style={{ marginBottom: '10px' }}>
               <h3>{event.name}</h3>
-              <p>Category: {event.subcategory.name}</p>
-              <p>Created by: {event.user.username}</p>
+              <p>Category: {event.subcategory?.name}</p>
+              <p>Created by: {event.user?.username}</p>
               <button onClick={() => onApprove(event.id)}>Onayla</button>
               <button onClick={() => onDelete(event.id)}>Sil</button>
             </li>

@@ -1,134 +1,108 @@
-// src/components/Chat.jsx
 import React, { useState, useEffect } from 'react';
+import { useAuth } from '../AuthContext'; // AuthContext'i kullanarak token'ı alacağız
+import styles from '../styles/Chat.module.css';
 
-function Chat({ eventId, senderId }) {
+const ChatComponent = ({ eventId }) => {
+  const { authToken } = useAuth();  // AuthContext'ten token alınır
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  // Mesajları çekme işlemi
   useEffect(() => {
-    const exampleMessages = [
-      { mesajId: 1, gondericiId: "123", etkinlikId: eventId, mesajMetni: "Merhaba! Etkinliğe katılan var mı?", gonderimZamani: "2024-11-05T10:15:00" },
-      { mesajId: 2, gondericiId: "456", etkinlikId: eventId, mesajMetni: "Ben katılıyorum, çok heyecanlıyım!", gonderimZamani: "2024-11-05T10:17:00" },
-    ];
-    setMessages(exampleMessages);
-  }, [eventId]);
+    const fetchMessages = async () => {
+      setLoading(true);
+      setError(null);
 
-  const handleSendMessage = () => {
+      try {
+        const response = await fetch(`http://localhost:3000/api/messages/event/${eventId}/messages`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${authToken}`,  // Token'ı Authorization başlığına ekliyoruz
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Mesajlar alınırken bir hata oluştu.');
+        }
+
+        const data = await response.json();
+        setMessages(data); // Gelen mesajları set ediyoruz
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (authToken) {
+      fetchMessages();
+    }
+  }, [eventId, authToken]);
+
+  // Yeni mesaj gönderme işlemi
+  const handleSendMessage = async () => {
     if (newMessage.trim()) {
       const message = {
-        mesajId: messages.length + 1,
-        gondericiId: senderId,
+        gondericiId: 1, // Kullanıcı ID'sini eklemelisiniz
         etkinlikId: eventId,
         mesajMetni: newMessage,
         gonderimZamani: new Date().toISOString(),
       };
 
-      setMessages((prevMessages) => [...prevMessages, message]);
-      setNewMessage('');
+      try {
+        const response = await fetch(`http://localhost:3000/api/messages/${eventId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`,  // Token'ı Authorization başlığına ekliyoruz
+          },
+          body: JSON.stringify(message),
+        });
+
+        if (!response.ok) {
+          throw new Error('Mesaj gönderilirken bir hata oluştu.');
+        }
+
+        const data = await response.json();
+        setMessages((prevMessages) => [...prevMessages, data]);
+        setNewMessage('');
+      } catch (err) {
+        setError(err.message);
+      }
     }
   };
 
+  if (loading) {
+    return <div>Yükleniyor...</div>;
+  }
+
+  if (error) {
+    return <div>Hata: {error}</div>;
+  }
+
   return (
-    <div style={styles.chatContainer}>
-      <h2 style={styles.chatTitle}>Etkinlik Sohbeti</h2>
-      <div style={styles.messageList}>
-        {messages.map((msg) => (
-          <div
-            key={msg.mesajId}
-            style={{
-              ...styles.message,
-              alignSelf: msg.gondericiId === senderId ? 'flex-end' : 'flex-start',
-              backgroundColor: msg.gondericiId === senderId ? '#DCF8C6' : '#ECECEC',
-            }}
-          >
-            {msg.gondericiId !== senderId && (
-              <p style={styles.sender}>Gönderen ID: {msg.gondericiId}</p>
-            )}
-            <p style={styles.messageText}>{msg.mesajMetni}</p>
-            <p style={styles.time}>{new Date(msg.gonderimZamani).toLocaleTimeString()}</p>
+    <div className={styles.chatContainer}>
+      <div className={styles.messagesContainer}>
+        {messages.map((message) => (
+          <div key={message.id} className={styles.message}>
+            <p><strong>{message.sender.username}:</strong> {message.text}</p>
+            <p><small>{new Date(message.sendTime).toLocaleString()}</small></p>
           </div>
         ))}
       </div>
-      <div style={styles.inputContainer}>
-        <input
-          type="text"
-          placeholder="Mesajınızı yazın..."
+
+      <div className={styles.inputContainer}>
+        <textarea
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
-          style={styles.input}
+          placeholder="Mesajınızı yazın..."
         />
-        <button onClick={handleSendMessage} style={styles.sendButton}>Gönder</button>
+        <button onClick={handleSendMessage}>Gönder</button>
       </div>
     </div>
   );
-}
-
-const styles = {
-  chatContainer: {
-    maxWidth: '600px',
-    margin: '0 auto',
-    padding: '20px',
-    border: '1px solid #ddd',
-    borderRadius: '8px',
-    backgroundColor: '#f9f9f9',
-    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
-  },
-  chatTitle: {
-    fontSize: '18px',
-    textAlign: 'center',
-    marginBottom: '10px',
-    color: '#333',
-  },
-  messageList: {
-    maxHeight: '300px',
-    overflowY: 'auto',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '10px',
-    marginBottom: '10px',
-  },
-  message: {
-    maxWidth: '80%',
-    padding: '10px',
-    borderRadius: '12px',
-    fontSize: '14px',
-    color: '#333',
-    display: 'inline-block',
-  },
-  sender: {
-    fontSize: '0.9em',
-    fontWeight: 'bold',
-    color: '#555',
-    marginBottom: '5px',
-  },
-  messageText: {
-    margin: 0,
-  },
-  time: {
-    fontSize: '0.8em',
-    color: '#666',
-    textAlign: 'right',
-    marginTop: '5px',
-  },
-  inputContainer: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  input: {
-    flex: 1,
-    padding: '10px',
-    borderRadius: '20px',
-    border: '1px solid #ccc',
-    marginRight: '10px',
-  },
-  sendButton: {
-    padding: '10px 15px',
-    backgroundColor: '#28a745',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '20px',
-    cursor: 'pointer',
-  },
 };
 
-export default Chat;
+export default ChatComponent;

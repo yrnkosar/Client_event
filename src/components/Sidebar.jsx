@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaChartBar, FaClipboardList, FaFileAlt, FaUsers, FaCalendarAlt } from 'react-icons/fa';
+import { FaChartBar, FaClipboardList, FaFileAlt, FaUsers, FaCalendarAlt, FaCog } from 'react-icons/fa'; // FaCog ikonu ekledik
 
 function Sidebar() {
   const [isOpen, setIsOpen] = useState(true);
@@ -17,16 +17,10 @@ function Sidebar() {
       {isOpen && <h2>Admin Paneli</h2>}
       <nav>
         <ul style={styles.navList}>
-          <li style={styles.navItem}>
-            <Link to="/admin/charts" style={styles.link}>
-              <FaChartBar style={styles.icon} />
-              {isOpen && <span>Grafikler</span>}
-            </Link>
-          </li>
-          <li style={styles.navItem}>
+         <li style={styles.navItem}>
             <Link to="/admin/pending-events" style={styles.link}>
               <FaClipboardList style={styles.icon} />
-              {isOpen && <span>Onay Bekleyen Etkinlikler</span>}
+              {isOpen && <span>Onay Bekleyenler</span>}
             </Link>
           </li>
           <li style={styles.navItem}>
@@ -45,6 +39,13 @@ function Sidebar() {
             <Link to="/admin/events" style={styles.link}>
               <FaCalendarAlt style={styles.icon} />
               {isOpen && <span>Etkinlik Listesi</span>}
+            </Link>
+          </li>
+          {/* Yeni kategori ekleme linki */}
+          <li style={styles.navItem}>
+            <Link to="/admin/categories" style={styles.link}>
+              <FaCog style={styles.icon} /> {/* FaCog ikonu, kategori ekleme için kullanıldı */}
+              {isOpen && <span>Kategori Ekle</span>}
             </Link>
           </li>
         </ul>

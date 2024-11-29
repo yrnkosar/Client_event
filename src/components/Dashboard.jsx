@@ -1,7 +1,7 @@
 import React from 'react';
 import Charts from './Charts.jsx';
 import PendingEvents from './PendingEvents.jsx';
-import Reports from './Reports.jsx';
+import Reports from '../pages/ReportsPage.jsx';
 import UserList from '../pages/UserListPage.jsx';
 import EventList from './EventList.jsx';
 import Summary from './Summary.jsx';
@@ -11,7 +11,7 @@ function Dashboard() {
       <h1>Admin Paneli</h1> 
       <Summary />
       <Charts />
-      <PendingEvents compact /> {/* PendingEvents'e compact prop'u ekleniyor */}
+    
      
      
     </div>

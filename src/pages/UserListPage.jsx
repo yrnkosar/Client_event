@@ -11,7 +11,7 @@ const UserListPage = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const usersPerPage = 5;
+  const usersPerPage = 10;
   const [modalUser, setModalUser] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
 
