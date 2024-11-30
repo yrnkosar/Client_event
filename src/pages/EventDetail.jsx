@@ -23,7 +23,8 @@ function EventDetail() {
   const [errorMessage, setErrorMessage] = useState(null);
   const [routeDetails, setRouteDetails] = useState(null); // Route details for distance and duration
   const [selectedMode, setSelectedMode] = useState('auto'); // Default is auto
-  
+  const [weightName, setWeightName] = useState('auto'); // default value for weight_name
+
   useEffect(() => {
     // Eğer user veya authToken yoksa, hata almamak için fonksiyonu sonlandır
     if (!user || !authToken) {
@@ -70,10 +71,12 @@ function EventDetail() {
         console.error(err.message);
       }
     };
-
+    if (selectedMode) {
+      handleCalculateRoute(selectedMode);
+    }
     fetchEvent();
     fetchParticipants();
-  }, [id, authToken, user]);
+  }, [id, authToken, user, selectedMode]);
 
   const handleJoinEvent = async () => {
     try {
@@ -172,7 +175,19 @@ const handleJoinChat = () => {
       console.error("Etkinlik güncellenirken hata:", error);
     }
   };
-
+  const modeButtons = [
+    { mode: "auto", label: "Araba", logo: carLogo },
+    { mode: "cyclability", label: "Bisiklet", logo: bikeLogo },
+    { mode: "pedestrian", label: "Yaya", logo: walkingLogo },
+  ];
+  const handleModeClick = (mode) => {
+    setSelectedMode(mode); // Seçilen modu güncelle
+    handleCalculateRoute(mode); // Seçilen modu göndererek rota hesapla
+  };
+  const handleModeChange = (value) => {
+    setSelectedMode(value);
+    handleCalculateRoute(value); // Fetch route for selected mode
+  };
   const handleCalculateRoute = async (mode) => {
     try {
       const response = await fetch(`http://localhost:3000/api/user/calculate-route/${id}`, {
@@ -181,39 +196,47 @@ const handleJoinChat = () => {
           Authorization: `Bearer ${authToken}`,
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ mode }), // Send selected mode
+        body: JSON.stringify({ mode, weight_name: mode }), // mode'u weight_name olarak kullanıyoruz
       });
-  
+
       if (!response.ok) {
         throw new Error(await response.text());
       }
-  
+
       const data = await response.json();
-  
-      if (data.routes && data.routes.length > 0) {
-        const selectedRoute = data.routes[0];
-        const coordinates = selectedRoute.geometry.coordinates;
-  
-        const geoJsonRoute = {
-          type: "FeatureCollection",
-          features: [
-            {
-              type: "Feature",
-              geometry: {
-                type: "LineString",
-                coordinates: coordinates, // Use fetched coordinates
-              },
-              properties: {
-                weight_name: selectedRoute.weight_name, // Use weight_name from API
-              },
-            },
-          ],
-        };
-  
-        setRoute(geoJsonRoute); // Set GeoJSON route for the map
-        setRouteDetails(selectedRoute.legs[0]); // Set route details (distance, duration)
+      //console.log("API Response:", data);
+      console.log("Routes received:", data.routes);
+
+     // Seçilen moda uygun route'u bul
+    const selectedRoute = data.routes.find(route => route.weight_name === selectedMode);
+    if (!selectedRoute) {
+      throw new Error(`No route found for mode: ${mode}`);
+    }
+
+    console.log("Selected Route weight_name:", selectedRoute.weight_name); // Doğru seçimi kontrol et
+
+    const coordinates = selectedRoute.geometry.coordinates;
+    const geoJsonRoute = {
+      type: "FeatureCollection",
+      features: [
+        {
+          type: "Feature",
+          geometry: {
+            type: "LineString",
+            coordinates: coordinates,
+          },
+          properties: {
+            weight_name: selectedRoute.weight_name,
+          },
+        },
+      ],
+    };
+
+
+        setRoute(geoJsonRoute); 
+        setRouteDetails(selectedRoute.legs[0]); 
       }
-    } catch (error) {
+     catch (error) {
       console.error("Error fetching route data:", error);
       setErrorMessage("Route calculation failed. Please try again.");
     }
@@ -221,34 +244,22 @@ const handleJoinChat = () => {
     if (!event) return <p>Etkinlik detayları yükleniyor...</p>;
   const isOwner = user?.id === event.user_id; // Kullanıcının etkinlik sahibi olup olmadığını kontrol ediyoruz
   //const eventCoordinates = [event.latitude, event.longitude];
-  const modeButtons = [
-    { mode: 'auto', logo: carLogo },
-    { mode: 'cycling', logo: bikeLogo },
-    { mode: 'walking', logo: walkingLogo },
-  ];
 
-  const handleModeChange = (mode) => {
-    setSelectedMode(mode); // Update selected mode
-    handleCalculateRoute(mode); // Fetch route for selected mode
-  };
 
-  const renderRouteDetails = () => {
+  const renderRouteDetails = (mode) => {
     if (routeDetails) {
-      return (
-        <div>
-          <p><strong>Distance:</strong> {(routeDetails.distance / 1000).toFixed(2)} km</p>
-          <p><strong>Duration:</strong> {Math.round(routeDetails.duration / 60)} minutes</p>
-          <p><strong>Summary:</strong> {routeDetails.summary || "No summary available"}</p>
-        </div>
-      );
+        return (
+            <div>
+                <p><strong>Distance:</strong> {(routeDetails.distance / 1000).toFixed(2)} km</p>
+                <p><strong>Duration:</strong> {(routeDetails.duration / 3600).toFixed(2)} Saat</p>
+            </div>
+        );
     }
-  };
+};
 
   return (
     <div style={styles.container}>
        <h1 style={styles.title}>{event.name}</h1>
-       
-
       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
       <p><strong>Etkinlik ID:</strong> {event.id}</p>
       <p><strong>Düzenleyen:</strong> {event.User?.username}</p>
@@ -258,33 +269,42 @@ const handleJoinChat = () => {
       <p><strong>Süre:</strong> {event.duration}</p>
       <p><strong>Konum:</strong> Latitude: {event.latitude}, Longitude: {event.longitude}</p>
       <p><strong>Kategori:</strong> {event.Subcategory?.name}</p>
-      {/* Etkinlik sahibi kontrolü */}
-      {route && (
-      <MapContainer center={[event.latitude, event.longitude]} zoom={13} style={{ height: '400px', width: '100%' }}>
+
+      <div style={{ display: "flex", gap: "10px", margin: "20px 0" }}>
+  {modeButtons.map((button) => (
+    <button
+      key={button.mode}
+      style={{
+        padding: "10px",
+        border: "1px solid #ccc",
+        backgroundColor: selectedMode === button.mode ? "#007bff" : "#fff",
+        color: selectedMode === button.mode ? "#fff" : "#000",
+        borderRadius: "5px",
+        cursor: "pointer",
+        display: "flex",
+        alignItems: "center",
+        gap: "10px",
+      }}
+      onClick={() => handleModeClick(button.mode)} // Tıklama ile doğrudan modu gönder
+    >
+      <img src={button.logo} alt={button.label} style={{ width: "20px", height: "20px" }} />
+      {button.label}
+    </button>
+  ))}
+</div>
+
+     
+
+      <MapContainer center={[event.latitude, event.longitude]} zoom={13} style={{ height: '500px', width: '100%' }}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        <GeoJSON
-          data={route}
-          style={{
-            color: selectedMode === 'auto' ? 'blue' : selectedMode === 'cycling' ? 'green' : 'orange',
-            weight: 5,
-          }}
-        />
+        {route && <GeoJSON data={route} />}
       </MapContainer>
-    )}
-    <div>
-      {modeButtons.map((button) => (
-        <button key={button.mode} onClick={() => handleModeChange(button.mode)}>
-          <img src={button.logo} alt={button.mode} style={{ width: '24px', height: '24px' }} />
-        </button>
-      ))}
+      {renderRouteDetails()}
+
+        <div>
+   
     </div>
-    <div>
-      {routeDetails && (
-        <p>
-          Mesafe: {routeDetails.distance}m, Süre: {routeDetails.duration} dakika
-        </p>
-      )}
-    </div>
+   
       {isOwner && (
         <>
           <button onClick={toggleEditForm} style={styles.editButton}>
