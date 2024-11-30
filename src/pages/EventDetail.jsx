@@ -4,7 +4,7 @@ import Chat from '../components/Chat.jsx';
 import { useAuth} from '../AuthContext.jsx';
 import 'leaflet/dist/leaflet.css';
 import MapComponent from '../components/MapComponent.jsx'; 
-import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
+import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from 'react-leaflet';
 import carLogo from '../assets/images.png'; // Auto logo
 import bikeLogo from '../assets/images.png'; // Bicycle logo
 import walkingLogo from '../assets/images.png'; // Pedestrian logo
@@ -24,6 +24,7 @@ function EventDetail() {
   const [routeDetails, setRouteDetails] = useState(null); // Route details for distance and duration
   const [selectedMode, setSelectedMode] = useState('auto'); // Default is auto
   const [weightName, setWeightName] = useState('auto'); // default value for weight_name
+  const [selectedRoute, setSelectedRoute] = useState(null); // Define the state for selectedRoute
 
   useEffect(() => {
     // Eğer user veya authToken yoksa, hata almamak için fonksiyonu sonlandır
@@ -295,10 +296,30 @@ const handleJoinChat = () => {
 
      
 
-      <MapContainer center={[event.latitude, event.longitude]} zoom={13} style={{ height: '500px', width: '100%' }}>
-        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        {route && <GeoJSON data={route} />}
-      </MapContainer>
+<MapContainer center={[event.latitude, event.longitude]} zoom={13} style={{ height: '500px', width: '100%' }}>
+  <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+  {route && (
+    <>
+      <GeoJSON data={route} />
+      {/* Başlangıç Noktasını İşaretliyoruz */}
+      <Marker position={[event.latitude, event.longitude]}>
+        <Popup>Başlangıç Noktası</Popup>
+      </Marker>
+
+      {/* Eğer selectedRoute varsa, bitiş noktasını işaretle */}
+      {selectedRoute ? (
+        <Marker position={selectedRoute.geometry.coordinates[selectedRoute.geometry.coordinates.length - 1]}>
+          <Popup>Bitiş Noktası</Popup>
+        </Marker>
+      ) : (
+        // Eğer selectedRoute yoksa, yalnızca bitiş noktasını işaretle
+        <Marker position={[event.latitude, event.longitude]}>
+          <Popup>Bitiş Noktası</Popup>
+        </Marker>
+      )}
+    </>
+  )}
+</MapContainer>
       {renderRouteDetails()}
 
         <div>
