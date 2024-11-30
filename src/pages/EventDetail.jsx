@@ -176,39 +176,46 @@ const handleJoinChat = () => {
   const handleCalculateRoute = async (mode) => {
     try {
       const response = await fetch(`http://localhost:3000/api/user/calculate-route/${id}`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${authToken}` },
-        body: JSON.stringify({ mode }), // Send selected mode (auto, bicycle, pedestrian)
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ mode }), // Send selected mode
       });
-
+  
       if (!response.ok) {
         throw new Error(await response.text());
       }
-
+  
       const data = await response.json();
+  
       if (data.routes && data.routes.length > 0) {
-        const route = data.routes[0].geometry.coordinates;
-        const geoJsonData = {
+        const selectedRoute = data.routes[0];
+        const coordinates = selectedRoute.geometry.coordinates;
+  
+        const geoJsonRoute = {
           type: "FeatureCollection",
           features: [
             {
               type: "Feature",
               geometry: {
                 type: "LineString",
-                coordinates: [[-73.97, 40.77], [-74.00, 40.75]]
+                coordinates: coordinates, // Use fetched coordinates
               },
               properties: {
-                weight_name: "heavy" // Bu alanın var olduğundan emin olun
-              }
-            }
-          ]
+                weight_name: selectedRoute.weight_name, // Use weight_name from API
+              },
+            },
+          ],
         };
-
-        setRoute(geoJsonRoute);
-        setRouteDetails(data.routes[0].legs[0]);
+  
+        setRoute(geoJsonRoute); // Set GeoJSON route for the map
+        setRouteDetails(selectedRoute.legs[0]); // Set route details (distance, duration)
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error fetching route data:", error);
+      setErrorMessage("Route calculation failed. Please try again.");
     }
   };
     if (!event) return <p>Etkinlik detayları yükleniyor...</p>;
@@ -221,16 +228,17 @@ const handleJoinChat = () => {
   ];
 
   const handleModeChange = (mode) => {
-    setSelectedMode(mode);
-    handleCalculateRoute(mode); // Calculate route for the selected mode
+    setSelectedMode(mode); // Update selected mode
+    handleCalculateRoute(mode); // Fetch route for selected mode
   };
 
   const renderRouteDetails = () => {
     if (routeDetails) {
       return (
         <div>
-          <p><strong>Distance:</strong> {routeDetails.distance / 1000} km</p>
+          <p><strong>Distance:</strong> {(routeDetails.distance / 1000).toFixed(2)} km</p>
           <p><strong>Duration:</strong> {Math.round(routeDetails.duration / 60)} minutes</p>
+          <p><strong>Summary:</strong> {routeDetails.summary || "No summary available"}</p>
         </div>
       );
     }
@@ -240,25 +248,7 @@ const handleJoinChat = () => {
     <div style={styles.container}>
        <h1 style={styles.title}>{event.name}</h1>
        
-       <div style={styles.modeButtons}>
-        {modeButtons.map((button) => (
-          <button key={button.mode} onClick={() => handleModeChange(button.mode)} style={styles.button}>
-            <img src={button.logo} alt={button.mode} style={styles.logo} />
-          </button>
-        ))}
-      </div>
 
-      <MapComponent
-        geoJsonData={route}
-        latitude={event.latitude}
-        longitude={event.longitude}
-        startLat={event.latitude}
-        startLng={event.longitude}
-        endLat={routeDetails?.end_location?.lat || event.latitude}
-        endLng={routeDetails?.end_location?.lng || event.longitude}
-      />
-      
-      {renderRouteDetails()}
       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
       <p><strong>Etkinlik ID:</strong> {event.id}</p>
       <p><strong>Düzenleyen:</strong> {event.User?.username}</p>
@@ -269,7 +259,32 @@ const handleJoinChat = () => {
       <p><strong>Konum:</strong> Latitude: {event.latitude}, Longitude: {event.longitude}</p>
       <p><strong>Kategori:</strong> {event.Subcategory?.name}</p>
       {/* Etkinlik sahibi kontrolü */}
-   
+      {route && (
+      <MapContainer center={[event.latitude, event.longitude]} zoom={13} style={{ height: '400px', width: '100%' }}>
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+        <GeoJSON
+          data={route}
+          style={{
+            color: selectedMode === 'auto' ? 'blue' : selectedMode === 'cycling' ? 'green' : 'orange',
+            weight: 5,
+          }}
+        />
+      </MapContainer>
+    )}
+    <div>
+      {modeButtons.map((button) => (
+        <button key={button.mode} onClick={() => handleModeChange(button.mode)}>
+          <img src={button.logo} alt={button.mode} style={{ width: '24px', height: '24px' }} />
+        </button>
+      ))}
+    </div>
+    <div>
+      {routeDetails && (
+        <p>
+          Mesafe: {routeDetails.distance}m, Süre: {routeDetails.duration} dakika
+        </p>
+      )}
+    </div>
       {isOwner && (
         <>
           <button onClick={toggleEditForm} style={styles.editButton}>
@@ -282,7 +297,7 @@ const handleJoinChat = () => {
       {showEditForm && (
         <EventEditForm event={event} onSave={handleSaveEdit} />
       )}
-
+    
       {isParticipant && !showChat && (
         <button onClick={handleJoinChat} style={styles.chatButton}>
           Sohbete Katıl
