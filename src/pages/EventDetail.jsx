@@ -2,9 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link,useNavigate} from 'react-router-dom';
 import Chat from '../components/Chat.jsx';
 import { useAuth} from '../AuthContext.jsx';
-
+import 'leaflet/dist/leaflet.css';
+import MapComponent from '../components/MapComponent.jsx'; 
+import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
+import carLogo from '../assets/images.png'; // Auto logo
+import bikeLogo from '../assets/images.png'; // Bicycle logo
+import walkingLogo from '../assets/images.png'; // Pedestrian logo
 function EventDetail() {
   const { id } = useParams();
+  const [route, setRoute] = useState(null);
   const navigate = useNavigate(); // Yönlendirme için useNavigate
   const [event, setEvent] = useState(null);
   const [showChat, setShowChat] = useState(false);
@@ -14,7 +20,10 @@ function EventDetail() {
   const [isParticipant, setIsParticipant] = useState(false);
   const [joined, setJoined] = useState(false);  // Declare the 'joined' state
   const [joinError, setJoinError] = useState(null); // State for error message
-
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [routeDetails, setRouteDetails] = useState(null); // Route details for distance and duration
+  const [selectedMode, setSelectedMode] = useState('auto'); // Default is auto
+  
   useEffect(() => {
     // Eğer user veya authToken yoksa, hata almamak için fonksiyonu sonlandır
     if (!user || !authToken) {
@@ -90,26 +99,25 @@ function EventDetail() {
             });
 
             if (userResponse.ok) {
-              const userData = await userResponse.json();
-              const totalPoints = userData.points.reduce((total, item) => total + item.points, 0);
-              setUserPoints(totalPoints);  
-              navigate('/profile');// Güncel puanları global state'e set et
-          } else {
-              console.error("Puanlar alınamadı");
-          }
-       
-      } else {
-        const errorText = await response.text();
-        if (errorText.includes('You cannot join this event because it overlaps with')) {
-          const overlappingEventName = errorText.split(': ')[1];
-          setJoinError(`Bu etkinliğe katılamazsınız çünkü başka bir etkinlikle çakışıyor: ${overlappingEventName}`);
+                const userData = await userResponse.json();
+                const totalPoints = userData.points.reduce((total, item) => total + item.points, 0);
+                setUserPoints(totalPoints);  
+                navigate('/profile'); // Güncel puanları global state'e set et
+            } else {
+                console.error("Puanlar alınamadı");
+            }
         } else {
-          console.error('Katılma başarısız', errorText);
+            const errorText = await response.text();
+            if (errorText.includes('You cannot join this event because it overlaps with')) {
+                const overlappingEventName = errorText.split(': ')[1];
+                alert(`Bu etkinliğe katılamazsınız çünkü başka bir etkinlikle çakışıyor: ${overlappingEventName}`);
+            } else {
+                console.error('Katılma başarısız', errorText);
+            }
         }
-      }
-  } catch (error) {
-      console.error("Katılma işlemi sırasında hata:", error);
-  }
+    } catch (error) {
+        console.error("Katılma işlemi sırasında hata:", error);
+    }
 };
 const handleDeleteEvent = async () => {
   const confirmDelete = window.confirm('Bu etkinliği silmek istediğinizden emin misiniz?');
@@ -165,12 +173,93 @@ const handleJoinChat = () => {
     }
   };
 
+  const handleCalculateRoute = async (mode) => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/user/calculate-route/${id}`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${authToken}` },
+        body: JSON.stringify({ mode }), // Send selected mode (auto, bicycle, pedestrian)
+      });
+
+      if (!response.ok) {
+        throw new Error(await response.text());
+      }
+
+      const data = await response.json();
+      if (data.routes && data.routes.length > 0) {
+        const route = data.routes[0].geometry.coordinates;
+        const geoJsonData = {
+          type: "FeatureCollection",
+          features: [
+            {
+              type: "Feature",
+              geometry: {
+                type: "LineString",
+                coordinates: [[-73.97, 40.77], [-74.00, 40.75]]
+              },
+              properties: {
+                weight_name: "heavy" // Bu alanın var olduğundan emin olun
+              }
+            }
+          ]
+        };
+
+        setRoute(geoJsonRoute);
+        setRouteDetails(data.routes[0].legs[0]);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
     if (!event) return <p>Etkinlik detayları yükleniyor...</p>;
   const isOwner = user?.id === event.user_id; // Kullanıcının etkinlik sahibi olup olmadığını kontrol ediyoruz
+  //const eventCoordinates = [event.latitude, event.longitude];
+  const modeButtons = [
+    { mode: 'auto', logo: carLogo },
+    { mode: 'cycling', logo: bikeLogo },
+    { mode: 'walking', logo: walkingLogo },
+  ];
+
+  const handleModeChange = (mode) => {
+    setSelectedMode(mode);
+    handleCalculateRoute(mode); // Calculate route for the selected mode
+  };
+
+  const renderRouteDetails = () => {
+    if (routeDetails) {
+      return (
+        <div>
+          <p><strong>Distance:</strong> {routeDetails.distance / 1000} km</p>
+          <p><strong>Duration:</strong> {Math.round(routeDetails.duration / 60)} minutes</p>
+        </div>
+      );
+    }
+  };
 
   return (
     <div style={styles.container}>
        <h1 style={styles.title}>{event.name}</h1>
+       
+       <div style={styles.modeButtons}>
+        {modeButtons.map((button) => (
+          <button key={button.mode} onClick={() => handleModeChange(button.mode)} style={styles.button}>
+            <img src={button.logo} alt={button.mode} style={styles.logo} />
+          </button>
+        ))}
+      </div>
+
+      <MapComponent
+        geoJsonData={route}
+        latitude={event.latitude}
+        longitude={event.longitude}
+        startLat={event.latitude}
+        startLng={event.longitude}
+        endLat={routeDetails?.end_location?.lat || event.latitude}
+        endLng={routeDetails?.end_location?.lng || event.longitude}
+      />
+      
+      {renderRouteDetails()}
+      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
       <p><strong>Etkinlik ID:</strong> {event.id}</p>
       <p><strong>Düzenleyen:</strong> {event.User?.username}</p>
       <p><strong>Açıklama:</strong> {event.description}</p>
@@ -205,7 +294,9 @@ const handleJoinChat = () => {
           Katıl
         </button>
       )}
-
+             {errorMessage && (
+                <p style={{ color: 'red', marginTop: '10px' }}>{errorMessage}</p>
+            )}
       <Link to="/home" style={styles.link}>Ana Sayfaya Dön</Link>
     
       {showChat && <Chat eventId={id} />}
@@ -406,6 +497,13 @@ const styles = {
     cursor: 'pointer',
     fontSize: '16px',
   },
+
+  logo: {
+    width: '30px',
+    height: '30px',
+  },
+
+
 };
 
 export default EventDetail;

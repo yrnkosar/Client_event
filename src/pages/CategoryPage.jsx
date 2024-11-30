@@ -86,7 +86,7 @@ function CategoryPage() {
     }
 
     try {
-      const response = await fetch('http://localhost:3000/api/admin/add-subcategories', {
+      const response = await fetch('http://localhost:3000/api/admin/add-subcategory', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
