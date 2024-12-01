@@ -7,14 +7,14 @@ const SelectInterests = () => {
     const navigate = useNavigate();
   const [subcategories, setSubcategories] = useState([]);
   const [selectedInterests, setSelectedInterests] = useState([]);
-  const userId = localStorage.getItem('userId'); // Kullanıcı ID'sini al
+  const userId = localStorage.getItem('userId'); 
   useEffect(() => {
     const fetchSubcategories = async () => {
       const token = localStorage.getItem('authToken');
   
       if (!token) {
         alert('You need to log in first!');
-        navigate('/'); // Giriş sayfasına yönlendirme
+        navigate('/'); 
         return;
       }
   
@@ -28,10 +28,10 @@ const SelectInterests = () => {
         if (response.ok) {
           const data = await response.json();
           console.log('Subcategories fetched:', data);
-          setSubcategories(data); // Beklenen veri dizi olmalı
+          setSubcategories(data); 
         } else if (response.status === 401) {
           alert('Unauthorized! Please log in again.');
-          navigate('/login'); // Giriş sayfasına yönlendirme
+          navigate('/login'); 
         } else {
           console.error('Failed to fetch subcategories');
           setSubcategories([]);
@@ -62,7 +62,7 @@ const SelectInterests = () => {
 
       if (response.ok) {
         const data = await response.json();
-        setSelectedInterests(data.interests || []); // Seçili ilgi alanları
+        setSelectedInterests(data.interests || []); 
       } else {
         console.error('Failed to fetch selected interests');
       }
@@ -87,7 +87,7 @@ const handleSave = async () => {
         const data = await response.json();
         if (response.ok) {
             alert(data.message || 'Interests saved successfully.');
-            navigate('/profile'); // Ana sayfaya yönlendirme
+            navigate('/profile'); 
         } else {
             alert(data.message || 'Failed to save interests');
         }

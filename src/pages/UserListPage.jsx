@@ -4,10 +4,10 @@ import { useNavigate , Link } from 'react-router-dom';
 import '../styles/UserListPage.css';
 
 const UserListPage = () => {
-  const { authToken, role, logout } = useAuth(); // AuthContext'ten authToken ve role alınıyor
+  const { authToken, role, logout } = useAuth();
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true); // Yükleme durumu
+  const [loading, setLoading] = useState(true); 
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -33,7 +33,7 @@ const UserListPage = () => {
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
-    setCurrentPage(1); // Arama yapıldığında ilk sayfaya dön
+    setCurrentPage(1); 
   };
 
  
@@ -78,18 +78,17 @@ const UserListPage = () => {
           throw new Error(`Hata: ${response.status} - ${errorData.message}`);
         }
 
-        setUsers(users.filter((user) => user.id !== userId)); // Kullanıcıyı sil
+        setUsers(users.filter((user) => user.id !== userId));
       } catch (error) {
         console.error('Silme işlemi başarısız:', error);
       }
     }
   };
 
-   // Pagination logic
+
    const generatePagination = () => {
     const pages = [];
-    const totalPagesToShow = 5; // Show a total of 5 pages at a time
-
+    const totalPagesToShow = 5; 
     if (totalPages <= totalPagesToShow) {
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i);
@@ -173,7 +172,7 @@ const UserListPage = () => {
         </tbody>
       </table>
 
-       {/* Pagination */}
+
       <div className="pagination">
         {generatePagination().map((page, index) => (
           <button
@@ -187,7 +186,6 @@ const UserListPage = () => {
         ))}
       </div>
 
-{/* Kullanıcı Detayları Modalı */}
 {isModalOpen && modalUser && (
   <div className="modal-backdrop">
     <div className="modal">

@@ -1,4 +1,3 @@
-// pages/EventListPage.js
 import { useNavigate , Link } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../AuthContext';
@@ -66,8 +65,7 @@ const EventListPage = () => {
         const errorData = await response.json();
         throw new Error(`Hata: ${response.status} - ${errorData.message}`);
       }
-  
-      // Güncellenen etkinlik verilerini yerel olarak güncelle
+
       const updatedEvent = await response.json();
       setEvents((prevEvents) =>
         prevEvents.map((event) =>
@@ -105,7 +103,7 @@ const EventListPage = () => {
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
-    setCurrentPage(1); // Arama yapıldığında ilk sayfaya dön
+    setCurrentPage(1); 
   };
 
   const filteredEvents = events.filter(
@@ -159,7 +157,6 @@ const EventListPage = () => {
     <div className="event-list-page">
       <h1 className="event-list-title">Etkinlik Yönetim Paneli</h1>
 
-      {/* Arama Çubuğu */}
       <div className="search-bar">
         <input
           type="text"
@@ -169,7 +166,7 @@ const EventListPage = () => {
         />
       </div>
 
-      {/* Etkinlik Tablosu */}
+
       {loading ? (
         <p>Yükleniyor...</p>
       ) : error ? (
@@ -215,11 +212,11 @@ const EventListPage = () => {
           </tbody>
         </table>
       )}
- {/* Detaylar Modalı */}
+
  {isModalOpen && (
         <DetailsModal event={modalEvent} onClose={closeModal} />
       )}
-      {/* Sayfalama */}
+ 
       <div className="pagination">
         <button
           className="pagination-button"
@@ -275,7 +272,6 @@ const EventListPage = () => {
   <div className="modal-backdrop">
     <div className="modal">
       {isEditMode ? (
-        // Düzenleme Formu
         <>
           <h2>Etkinliği Düzenle</h2>
           <form onSubmit={handleEditSubmit}>
@@ -382,7 +378,7 @@ const EventListPage = () => {
           </form>
         </>
       ) : (
-        // Detayları Göster
+  
         <>
           <h2>Etkinlik Detayları</h2>
           <p>

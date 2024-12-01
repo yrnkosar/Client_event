@@ -7,7 +7,7 @@ import Profile from './pages/Profile.jsx';
 import Register from './pages/Register.jsx'; 
 import ForgotPassword from './pages/ForgotPassword.jsx';
 import { AuthProvider } from './AuthContext.jsx';
-import NominatimTest from './components/nominatimTest.jsx';  // NominatimTest bileşenini içe aktar
+import NominatimTest from './components/nominatimTest.jsx';  
 import EventAdd from './pages/EventAdd.jsx';
 import AdminPage from './pages/AdminPage.jsx';
 import PendingEventsPage from './pages/PendingEventsPage.jsx';
@@ -18,7 +18,7 @@ import ResetPasswordLink from './components/ResetPasswordLink.jsx';
 import ResetPassword from './pages/ResetPassword.jsx';
 import ProfileEditForm from './components/ProfileEditForm.jsx';
 import SelectInterests from './pages/SelectInterests.jsx';
-import CategoryPage from './pages/CategoryPage'; // Kategori ekleme sayfasını dahil ettik
+import CategoryPage from './pages/CategoryPage';
 import Chat from './components/Chat';
 
 function App() {
@@ -34,10 +34,10 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/event-add" element={<EventAdd />} />
-          <Route path="/register" element={<Register />} />  {/* Add Register route */}
-          <Route path="/nominatim-test" element={<NominatimTest />} />  {/* Yeni route */}
-          <Route path="/admin" element={<AdminPage />} /> {/* AdminPage için element kullanıyoruz */}
-          <Route path="/admin/pending-events" element={<PendingEventsPage />} /> {/* PendingEventsPage için element kullanıyoruz */}
+          <Route path="/register" element={<Register />} />  
+          <Route path="/nominatim-test" element={<NominatimTest />} />  
+          <Route path="/admin" element={<AdminPage />} /> 
+          <Route path="/admin/pending-events" element={<PendingEventsPage />} /> 
           <Route path="/admin/users" element={<UserListPage />} />
           <Route path="/admin/events" element={<EventListPage />} />
           <Route path="/reset-password-link" element={<ResetPasswordLink />} />

@@ -1,4 +1,3 @@
-/* EventList.css */
 .event-list {
     list-style: none;
     padding: 0;
@@ -48,7 +47,7 @@
     font-weight: bold;
   }
   
-  /* Modal Animations */
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -58,34 +57,32 @@
   }
 }
 
-/* Modal Title */
 .modal h2 {
   font-size: 1.5rem;
   color: #333;
   font-weight: 600;
   margin-bottom: 20px;
-  text-align: center; /* Başlık ortalanmış */
+  text-align: center; 
 }
 
-/* Modal Content */
+
 .modal p {
   font-size: 1rem;
   color: #555;
   margin: 12px 0;
   line-height: 1.6;
-  display: block; /* Alt alta sıralanmasını sağlar */
+  display: block; 
 }
 
 
-/* Modal Strong Text */
 .modal p strong {
   font-weight: 700;
   color: #333;
-  margin-right: 5px; /* Bilgilerin daha düzenli görünmesini sağlar */
+  margin-right: 5px; 
   line-height: 1.6;
-  display: block; /* Alt alta sıralanmasını sağlar */
+  display: block; 
 }
-/* Modal Close Button */
+
 .modal-close {
   background-color: #007bff;
   color: #fff;

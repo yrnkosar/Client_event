@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import { Link , useNavigate} from 'react-router-dom';
 import { FaChartBar, FaClipboardList, FaFileAlt, FaUsers, FaCalendarAlt, FaCog, FaUser, FaSignOutAlt } from 'react-icons/fa';
-import styles from '../styles/Sidebar.module.css';  // Import CSS module
+import styles from '../styles/Sidebar.module.css'; 
 import { useAuth } from '../AuthContext.jsx';
 
 function Sidebar() {
   const [isOpen, setIsOpen] = useState(true);
   const navigate = useNavigate();
-  const { logout } = useAuth(); // AuthContext'ten logout fonksiyonunu al
+  const { logout } = useAuth();
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
   const handleLogout = () => {
-    logout(); // AuthContext'teki logout fonksiyonunu çağır
-    navigate('/'); // Ana sayfaya yönlendir
+    logout(); 
+    navigate('/');
   };
   return (
     <div className={styles.sidebar} style={{ width: isOpen ? '200px' : '50px' }}>

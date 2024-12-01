@@ -1,4 +1,4 @@
-/* Genel sayfa düzeni */
+
 .user-list-page {
     padding: 20px;
     font-family: 'Arial', sans-serif;
@@ -25,8 +25,7 @@
     border: 1px solid #ccc;
     border-radius: 5px;
   }
-  
-  /* Tablo düzeni */
+
   .user-list-table {
     width: 100%;
     border-collapse: collapse;
@@ -51,7 +50,7 @@
   .user-list-table tbody tr:hover {
     background-color: #f1f1f1;
   }
-  /* Pagination */
+
 .pagination {
   margin: 20px 0;
   text-align: center;
@@ -79,7 +78,6 @@
 .modal-close:hover {
   background-color: #0056b3;
 }
-/* Modal Backdrop */
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -95,14 +93,14 @@
 }
 
 .modal {
-  display: block; /* Flex veya Grid yerine block kullanarak her satır alt alta gelir */
-  width: 90%; /* Modal genişliği */
+  display: block; 
+  width: 90%; 
   max-width: 600px;
   background-color: white;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  margin: 0 auto; /* Ortada konumlandırma */
+  margin: 0 auto; 
 }
 
 .pagination-dots {
@@ -111,7 +109,7 @@
   color: #0056b3;
   cursor: default;}
   
-/* Modal Animations */
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -121,34 +119,34 @@
   }
 }
 
-/* Modal Title */
+
 .modal h2 {
   font-size: 1.5rem;
   color: #333;
   font-weight: 600;
   margin-bottom: 20px;
-  text-align: center; /* Başlık ortalanmış */
+  text-align: center; 
 }
 
-/* Modal Content */
+
 .modal p {
   font-size: 1rem;
   color: #555;
   margin: 12px 0;
   line-height: 1.6;
-  display: block; /* Alt alta sıralanmasını sağlar */
+  display: block;
 }
 
 
-/* Modal Strong Text */
+
 .modal p strong {
   font-weight: 700;
   color: #333;
-  margin-right: 5px; /* Bilgilerin daha düzenli görünmesini sağlar */
+  margin-right: 5px; 
   line-height: 1.6;
-  display: block; /* Alt alta sıralanmasını sağlar */
+  display: block; 
 }
-/* Modal Close Button */
+
 .modal-close {
   background-color: #007bff;
   color: #fff;

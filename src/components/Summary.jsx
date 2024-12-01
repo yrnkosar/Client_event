@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useAuth } from '../AuthContext';  // Importing useAuth hook to access authToken
-
+import { useAuth } from '../AuthContext';
 function Summary() {
-  const { authToken } = useAuth();  // Get the authToken from AuthContext
+  const { authToken } = useAuth(); 
   const [totalUsers, setTotalUsers] = useState(null);
   const [totalEvents, setTotalEvents] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -11,19 +10,19 @@ function Summary() {
     const fetchSummaryData = async () => {
       if (!authToken) {
         setLoading(false);
-        return;  // If there's no authToken, skip fetching data
+        return;  
       }
 
       try {
         const [usersRes, eventsRes] = await Promise.all([
           fetch('http://localhost:3000/api/admin/total-users', {
             headers: {
-              Authorization: `Bearer ${authToken}`,  // Include the token in the request header
+              Authorization: `Bearer ${authToken}`,  
             },
           }),
           fetch('http://localhost:3000/api/admin/total-events', {
             headers: {
-              Authorization: `Bearer ${authToken}`,  // Include the token in the request header
+              Authorization: `Bearer ${authToken}`,  
             },
           }),
         ]);
@@ -33,9 +32,8 @@ function Summary() {
           eventsRes.json(),
         ]);
 
-        setTotalUsers(usersData.totalUsers);  // Set total users from response
-        setTotalEvents(eventsData.totalEvents);  // Set total events from response
-
+        setTotalUsers(usersData.totalUsers);
+        setTotalEvents(eventsData.totalEvents);  
         setLoading(false);
       } catch (error) {
         console.error('Error fetching summary data:', error);
@@ -44,7 +42,7 @@ function Summary() {
     };
 
     fetchSummaryData();
-  }, [authToken]);  // Run the effect when authToken changes
+  }, [authToken]); 
 
   if (loading) {
     return <div>Loading...</div>;

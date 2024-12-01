@@ -1,8 +1,6 @@
-/* category.module.css */
 
-/* Genel Sayfa Düzeni */
 .container {
-    max-width: 100vw;
+    max-width: 90vw;
     padding: 20px;
     font-family: 'Arial', sans-serif;
     background-color: #f8f9fa;
@@ -17,14 +15,12 @@
     margin-top: 30px;
   }
   
-  /* Hata Mesajları */
+
   .error {
     color: red;
     font-weight: bold;
   }
-  
-  /* Modal Stili */
-  .modal {
+ .modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -49,9 +45,9 @@
     margin-bottom: 20px;
   }
   
-  /* Kategori ve Alt Kategori Tablosu */
+
   .table {
-    width: 90vw;
+    width: 80vw;
     border-collapse: collapse;
     background: white;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -79,7 +75,7 @@
     cursor: pointer;
   }
   
-  /* Form Input Alanları */
+
   input[type="text"], select {
     width: 100%;
     padding: 10px;
@@ -88,7 +84,7 @@
     margin-bottom: 10px;
   }
   
-  /* Eylem Butonları */
+
   button {
     background-color: #007bff;
     color: white;
@@ -102,8 +98,7 @@
   button:hover {
     background-color: #0056b3;
   }
-  
-  /* Silme Butonları */
+
   button.delete {
     background-color: #bd3644;
   }
@@ -111,8 +106,7 @@
   button.delete:hover {
     background-color: #c82333;
   }
-  
-  /* Modal Butonları */
+
   button[type="submit"] {
     background-color: #0e704c;
     padding: 10px;
@@ -121,8 +115,7 @@
   button[type="submit"]:hover {
     background-color: #0b5b3b;
   }
-  
-  /* Kapat Butonu */
+
   button[type="button"] {
     background-color: #6c757d;
   }
@@ -130,7 +123,7 @@
   button[type="button"]:hover {
     background-color: #5a6268;
   }
-  /* Genel buton stilleri */
+
 .action-button {
     background-color: #007bff;
     color: white;
@@ -139,8 +132,8 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-right: 10px; /* Butonlar arasına sağ boşluk ekledik */
-    margin-bottom: 10px; /* Butonların altına boşluk ekledik */
+    margin-right: 10px; 
+    margin-bottom: 10px;
   }
   
   .action-button:hover {
@@ -155,23 +148,22 @@
     background-color: #c82333;
   }
   
-  /* Kategori ve alt kategori ekleme butonları arasına daha fazla boşluk */
+
   button {
-    margin-right: 15px; /* Butonlar arasına sağ boşluk ekliyoruz */
-    margin-bottom: 15px; /* Alt boşluk ekliyoruz */
+    margin-right: 15px; 
+    margin-bottom: 15px;
   }
-  /* Kategoriler ve Alt Kategoriler İçin Başlıklar */
+
   h1, h2 {
     font-size: 1.5rem;
   }
   
-  /* Kategori ve Alt Kategori Modal Başlıkları */
+  
   h3 {
     text-align: center;
     font-size: 1.2rem;
   }
-  
-  /* Sayfalama */
+
   .pagination {
     display: flex;
     justify-content: center;

@@ -1,4 +1,3 @@
-// components/DetailsModal.js
 import React from 'react';
 
 const DetailsModal = ({ event, onClose }) => {

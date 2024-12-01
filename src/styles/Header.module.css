@@ -42,23 +42,22 @@
 
 .link {
   margin-left: 20px;
-  text-decoration: none;  /* Alt çizgiyi kaldır */
-  color: #333;  /* Normalde koyu gri renk */
-  font-size: 18px;  /* Linklerin font boyutunu büyüt */
-  font-weight: 500;  /* Daha kalın font */
-  transition: color 0.3s, transform 0.3s ease;  /* Renk ve transform geçişi */
-}
-/* Link aktif olduğunda farklı stil */
-.link.active {
-  color: #007bff;  /* Mavi renk aktif link için */
-  font-weight: bold;  /* Aktif linki kalın yap */
-  transform: scale(1.05);  /* Aktif linki hafif büyüt */
+  text-decoration: none;  
+  color: #333;  
+  font-size: 18px; 
+  font-weight: 500;  
+  transition: color 0.3s, transform 0.3s ease;  
 }
 
-/* Link üzerine gelindiğinde (hover) stil */
+.link.active {
+  color: #007bff; 
+  font-weight: bold; 
+  transform: scale(1.05);  
+}
+
 .link:hover {
-  color: #0056b3;  /* Hover sırasında daha koyu mavi */
-  text-decoration: underline;  /* Altını çizin */
+  color: #0056b3;  
+  text-decoration: underline;  
 }
 .active {
   color: blue;
@@ -66,7 +65,7 @@
 
 .notificationsDropdown {
   position: absolute;
-  top: 60px; /* Header'ın hemen altına yerleşmesi için */
+  top: 60px; 
   right: 10px;
   background-color: white;
   padding: 10px;
@@ -87,7 +86,7 @@
 }
 
 .notificationButton:hover {
-  background-color: #125480; /* Hover efekti */
+  background-color: #125480; 
 }
 
 .burgerButton {
@@ -98,7 +97,7 @@
   cursor: pointer;
 }
 
-/* 1920px altında genişlik ayarları */
+
 @media (max-width: 1920px) {
   .header {
     padding: 0 20px;
@@ -109,7 +108,7 @@
   }
 }
 
-/* Daha küçük ekranlarda burger menü gösterimi */
+
 @media (max-width: 768px) {
   .nav {
     display: none;
@@ -123,7 +122,6 @@
     display: block;
   }
 }
-/* Logout Button stilini CSS modülünde tanımlayın */
 .logoutButton {
   background-color: #ec5976;
   color: white;

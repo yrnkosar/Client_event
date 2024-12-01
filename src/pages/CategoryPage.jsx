@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../AuthContext'; // useAuth ile authToken'ı alıyoruz
+import { useAuth } from '../AuthContext'; 
 import styles from '../styles/category.module.css';
 
 function CategoryPage() {
-  const { authToken } = useAuth(); // useAuth'tan authToken alıyoruz
+  const { authToken } = useAuth(); 
   const [categoryName, setCategoryName] = useState('');
   const [subcategoryName, setSubcategoryName] = useState('');
   const [categories, setCategories] = useState([]);
@@ -14,17 +14,17 @@ function CategoryPage() {
   const [isSubcategoryModalOpen, setSubcategoryModalOpen] = useState(false);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [editSubcategory, setEditSubcategory] = useState(null);
-  const [editCategory, setEditCategory] = useState(null); // Düzenlenecek kategori state'i
-  const [isCategoryEditModalOpen, setCategoryEditModalOpen] = useState(false); // Kategori düzenleme modalı için state
+  const [editCategory, setEditCategory] = useState(null); 
+  const [isCategoryEditModalOpen, setCategoryEditModalOpen] = useState(false); 
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
 
-  // Kategorileri yükleme işlemi
+  
   useEffect(() => {
     const fetchCategories = async () => {
       setLoading(true);
       try {
         const response = await fetch('http://localhost:3000/api/event/categories', {
-          headers: { Authorization: `Bearer ${authToken}` }, // Token'ı başlığa ekliyoruz
+          headers: { Authorization: `Bearer ${authToken}` }, 
         });
 
         if (!response.ok) {
@@ -48,7 +48,6 @@ function CategoryPage() {
     fetchCategories();
   }, [authToken]);
 
-  // Alt kategorileri yükleme
   useEffect(() => {
     const fetchSubcategories = async () => {
       try {
@@ -71,7 +70,6 @@ function CategoryPage() {
     fetchSubcategories();
   }, [authToken]);
 
-  // Category creation handler
 const handleCategorySubmit = async (e) => {
   e.preventDefault();
   if (!categoryName) {
@@ -84,7 +82,7 @@ const handleCategorySubmit = async (e) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${authToken}`, // Attach token to header
+        Authorization: `Bearer ${authToken}`, 
       },
       body: JSON.stringify({ name: categoryName }),
     });
@@ -104,7 +102,6 @@ const handleCategorySubmit = async (e) => {
   }
 };
 
-// Subcategory creation handler
 const handleSubcategorySubmit = async (e) => {
   e.preventDefault();
   if (!subcategoryName) {
@@ -117,7 +114,7 @@ const handleSubcategorySubmit = async (e) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${authToken}`, // Attach token to header
+        Authorization: `Bearer ${authToken}`, 
       },
       body: JSON.stringify({ name: subcategoryName, categoryId: selectedCategoryId }),
     });
@@ -137,7 +134,6 @@ const handleSubcategorySubmit = async (e) => {
   }
 };
 
-// Kategori silme işlemi
 const handleDeleteCategory = async (categoryId) => {
   if (window.confirm('Kategoriyi silmek istediğinizden emin misiniz?')) {
     try {
@@ -161,7 +157,6 @@ const handleDeleteCategory = async (categoryId) => {
   }
 };
 
-// Alt kategori silme işlemi
 const handleDeleteSubcategory = async (subcategoryId) => {
   if (window.confirm('Alt kategoriyi silmek istediğinizden emin misiniz?')) {
     try {
@@ -184,11 +179,11 @@ const handleDeleteSubcategory = async (subcategoryId) => {
     }
   }
 };
-  // Kategori düzenleme işlemi
+
   const handleCategoryEdit = (category) => {
     setEditCategory(category);
     setCategoryName(category.name);
-    setCategoryEditModalOpen(true); // Düzenleme modalını açıyoruz
+    setCategoryEditModalOpen(true); 
   };
 
   const handleCategoryEditSubmit = async (e) => {
@@ -220,14 +215,14 @@ const handleDeleteSubcategory = async (subcategoryId) => {
       const updatedCategory = await response.json();
       setCategories(categories.map(cat => (cat.id === updatedCategory.id ? updatedCategory : cat)));
       setCategoryName('');
-      setCategoryEditModalOpen(false); // Modalı kapatıyoruz
+      setCategoryEditModalOpen(false); 
       setError('');
       alert('Kategori başarıyla güncellendi.');
     } catch (err) {
       console.error(err);
     }
   };
-  // Alt kategori düzenleme işlemi
+ 
   const handleEditSubcategory = (subcategory) => {
     setEditSubcategory(subcategory);
     setSubcategoryName(subcategory.name);
@@ -246,7 +241,7 @@ const handleDeleteSubcategory = async (subcategoryId) => {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${authToken}`, // Token'ı başlığa ekliyoruz
+          Authorization: `Bearer ${authToken}`,
         },
         body: JSON.stringify({ name: subcategoryName }),
       });
@@ -275,8 +270,6 @@ const handleDeleteSubcategory = async (subcategoryId) => {
   return (
     <div className={styles.container}>
       <h1>Kategoriler</h1>
-
-      {/* Kategori ve alt kategori ekleme butonları */}
       <button onClick={() => setCategoryModalOpen(true)}>Kategori Ekle</button>
       <button onClick={() => setSubcategoryModalOpen(true)}>Alt Kategori Ekle</button>
 
@@ -334,7 +327,6 @@ const handleDeleteSubcategory = async (subcategoryId) => {
         </table>
       )}
 
-      {/* Kategori Ekle Modal */}
       {isCategoryModalOpen && (
         <div className={styles.modal}>
           <div className={styles.modalContent}>
@@ -354,7 +346,6 @@ const handleDeleteSubcategory = async (subcategoryId) => {
         </div>
       )}
 
-      {/* Kategori Düzenle Modal */}
       {isCategoryEditModalOpen && (
         <div className={styles.modal}>
           <div className={styles.modalContent}>
@@ -374,7 +365,6 @@ const handleDeleteSubcategory = async (subcategoryId) => {
         </div>
       )}
 
- {/* Alt Kategori Ekle Modal */}
  {isSubcategoryModalOpen && (
         <div className={styles.modal}>
           <div className={styles.modalContent}>
@@ -406,7 +396,6 @@ const handleDeleteSubcategory = async (subcategoryId) => {
         </div>
       )}
 
-      {/* Alt Kategori Düzenle Modal */}
       {isEditModalOpen && (
         <div className={styles.modal}>
           <div className={styles.modalContent}>

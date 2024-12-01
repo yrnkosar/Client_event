@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 function NominatimTest() {
   const [location, setLocation] = useState(null);
   const [address, setAddress] = useState(null);
-  const [city, setCity] = useState('');  // Kullanıcının girdiği şehir
-  const [error, setError] = useState(null);  // Hata durumu
+  const [city, setCity] = useState('');  
+  const [error, setError] = useState(null); 
 
   const fetchLocation = async () => {
     if (!city) {
@@ -13,12 +13,12 @@ function NominatimTest() {
     }
 
     try {
-      setError(null);  // Hata mesajını sıfırlıyoruz
+      setError(null);  
       const response = await fetch(
         `https://nominatim.openstreetmap.org/search?q=${city}&format=json&addressdetails=1`
       );
 
-      // Hatalı yanıtları kontrol et
+      
       if (!response.ok) {
         setError('Failed to fetch location data!');
         return;
@@ -28,10 +28,10 @@ function NominatimTest() {
 
       if (data.length === 0) {
         setError('City not found!');
-        setLocation(null); // Konum verisini sıfırlıyoruz
-        setAddress(null); // Adres verisini sıfırlıyoruz
+        setLocation(null); 
+        setAddress(null); 
       } else {
-        setLocation(data[0]);  // İlk sonuç, genellikle doğru olanıdır
+        setLocation(data[0]);  
         setAddress(data[0].address);
       }
     } catch (err) {

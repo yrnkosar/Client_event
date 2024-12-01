@@ -4,7 +4,7 @@ import { useAuth } from '../AuthContext.jsx';
 import jwtDecode from 'jwt-decode';
 
 const Login = () => {
-  const { setAuthToken } = useAuth(); // Assuming you manage auth token in context
+  const { setAuthToken } = useAuth(); 
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -22,10 +22,9 @@ const Login = () => {
         body: JSON.stringify({ username, password }),
       });
   
-      // Yanıt verisini direkt json() ile alıyoruz
-      const data = await response.json(); // response.body'yi burada okuyoruz
+      const data = await response.json(); 
   
-      console.log('Parsed response data:', data); // Gelen veriyi yazdır
+      console.log('Parsed response data:', data); 
   
       if (!response.ok) {
         console.error('Login error:', data.message);
@@ -33,9 +32,9 @@ const Login = () => {
         return;
       }
   
-      setAuthToken(data.token);  // Eğer token varsa
-      localStorage.setItem('authToken', data.token); // Token'ı localStorage'a kaydet
-       // Token'dan rolü çözümle
+      setAuthToken(data.token);  
+      localStorage.setItem('authToken', data.token); 
+  
     const decodedToken = jwtDecode(data.token);
     console.log('Decoded Token:', decodedToken);
 
@@ -50,8 +49,8 @@ const Login = () => {
 
   
     } catch (error) {
-      console.error('Request failed:', error); // Ağ hatası
-      setError('Login failed. Please try again.'); // Genel hata mesajı
+      console.error('Request failed:', error);
+      setError('Login failed. Please try again.'); 
     }
   };
   return (

@@ -6,7 +6,6 @@ const UserPoints = () => {
   const [error, setError] = useState(null);
   const { user, authToken, userPoints, setUserPoints, role } = useAuth();
 
-  // Etkinlik katılımı sonrası puanları güncellemek için fonksiyon
   const fetchPoints = async () => {
     if (!user || !user.id) {
       setError('User ID is not available.');
@@ -28,13 +27,12 @@ const UserPoints = () => {
 
       const data = await response.json();
       const totalPoints = data.points.reduce((total, item) => total + item.points, 0);
-      setUserPoints(totalPoints); // Update global points state
+      setUserPoints(totalPoints); 
     } catch (err) {
       setError(err.message);
     }
   };
 
-  // useEffect ile puanları çağır
   useEffect(() => {
     if (user && authToken&& role !== 'admin') {
       fetchPoints();

@@ -1,4 +1,4 @@
-/* src/pages/EventAdd.css */
+
 .event-add-container {
     width: 100vw;
     max-width: 1000px;
@@ -20,7 +20,7 @@
   .event-form {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Formu yatayda ortalar */
+    align-items: center; 
   }
   .modal {
     position: fixed;
@@ -56,8 +56,8 @@
   }
   .form-group {
     margin-bottom: 20px;
-    width: 100%; /* Form alanının tamamına yayılmasını sağlar */
-    max-width: 600px; /* Maksimum genişlik sınırlaması */
+    width: 100%; 
+    max-width: 600px;
   }
   
   label {

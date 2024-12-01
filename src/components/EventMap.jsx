@@ -2,8 +2,6 @@ import React from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import styles from "../styles/EventMap.module.css";
-
-// Leaflet marker simgesi düzeltmesi
 import L from "leaflet";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
@@ -17,7 +15,7 @@ const defaultIcon = L.icon({
 L.Marker.prototype.options.icon = defaultIcon;
 
 const EventMap = ({ events }) => {
-  const defaultPosition = [41.0082, 28.9784]; // İstanbul'un koordinatları
+  const defaultPosition = [41.0082, 28.9784];
 
   if (!Array.isArray(events)) {
     console.error("events prop is not an array:", events);

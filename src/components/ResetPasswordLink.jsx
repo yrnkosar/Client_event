@@ -6,15 +6,13 @@ const ResetPasswordLink = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // URL parametrelerinden token'ı al
     const queryParams = new URLSearchParams(location.search);
     const token = queryParams.get('token');
 
     if (token) {
-      // Eğer token varsa, ResetPassword sayfasına yönlendir
       navigate(`/reset-password?token=${token}`);
     } else {
-      // Token yoksa hata mesajı veya farklı bir yönlendirme yapılabilir
+
       console.log('Geçersiz link');
     }
   }, [location, navigate]);

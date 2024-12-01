@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 const MapComponent = ({ geoJsonData, routeData, latitude, longitude }) => {
   const [geojsonData, setGeojsonData] = useState(null);
 
-  // GeoJSON verisini işleyip state'e aktar
+
   useEffect(() => {
     if (routeData) {
       const geoData = {
@@ -27,7 +27,7 @@ const MapComponent = ({ geoJsonData, routeData, latitude, longitude }) => {
     }
   }, [routeData]);
 
-  // GeoJSON rotalarını stilize eden fonksiyon
+
   const getStyle = (feature) => {
     switch (feature.properties.weight_name) {
       case 'auto':
@@ -43,7 +43,7 @@ const MapComponent = ({ geoJsonData, routeData, latitude, longitude }) => {
 
   return (
     <MapContainer
-      center={latitude && longitude ? [latitude, longitude] : [40.984365, 29.043857]} // Varsayılan merkez veya kullanıcının konumu
+      center={latitude && longitude ? [latitude, longitude] : [40.984365, 29.043857]} 
       zoom={13}
       style={{ height: '100vh', width: '100%' }}
     >
@@ -53,20 +53,20 @@ const MapComponent = ({ geoJsonData, routeData, latitude, longitude }) => {
       />
 
       {geoJsonData && (
-        // GeoJSON verisi varsa rotaları çiz
+       
         <GeoJSON data={geoJsonData} style={getStyle} />
       )}
 
       {routeData && (
-        // Route verisi varsa Polyline ile çiz
+       
         <Polyline
-          positions={routeData.geometry.coordinates.map(([lng, lat]) => [lat, lng])} // Longitude ve Latitude dönüşümü
+          positions={routeData.geometry.coordinates.map(([lng, lat]) => [lat, lng])} 
           color="blue"
         />
       )}
 
       {!geoJsonData && !routeData && latitude && longitude && (
-        // Eğer GeoJSON veya route yoksa Marker ile konumu göster
+      
         <Marker position={[latitude, longitude]}>
           <Popup>Bu konumda yer alıyorsunuz</Popup>
         </Marker>

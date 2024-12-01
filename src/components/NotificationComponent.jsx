@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../AuthContext.jsx'; // AuthContext'i kullanarak kullanıcı bilgilerine erişim
+import { useAuth } from '../AuthContext.jsx'; 
 
 const NotificationComponent = () => {
-  const [notifications, setNotifications] = useState([]); // Bildirimler için state
-  const { authToken } = useAuth(); // Token'ı AuthContext'ten alıyoruz
+  const [notifications, setNotifications] = useState([]); 
+  const { authToken } = useAuth(); 
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -11,29 +11,28 @@ const NotificationComponent = () => {
         const response = await fetch('http://localhost:3000/api/message/notifications', {
           method: 'GET',
           headers: {
-            'Authorization': `Bearer ${authToken}`, // Token'ı gönderiyoruz
+            'Authorization': `Bearer ${authToken}`, 
           },
         });
 
-        const data = await response.json(); // Yanıtı JSON'a çeviriyoruz
+        const data = await response.json(); 
 
-        console.log('Fetched notifications:', data); // API'den gelen veriyi kontrol ediyoruz
-
-        // API yanıtının doğru olduğunu kontrol edelim
+        console.log('Fetched notifications:', data); 
+  
         if (data.success && data.notifications) {
-          setNotifications(data.notifications); // Bildirimleri state'e kaydediyoruz
+          setNotifications(data.notifications); 
         } else {
           console.error('Error fetching notifications:', data.message || 'Unknown error');
-          setNotifications([]); // Hata durumunda bildirimleri boş tutuyoruz
+          setNotifications([]); 
         }
       } catch (error) {
         console.error('Failed to fetch notifications:', error);
-        setNotifications([]); // Hata durumunda bildirimleri boş tutuyoruz
+        setNotifications([]);
       }
     };
 
-    fetchNotifications(); // Bildirimleri çekmeye başlıyoruz
-  }, [authToken]); // Token her değiştiğinde bildirimleri tekrar çek
+    fetchNotifications(); 
+  }, [authToken]); 
 
   return (
     <div>

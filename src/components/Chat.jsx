@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../AuthContext'; // AuthContext'ten user ID ve token alıyoruz
+import { useAuth } from '../AuthContext';
 import styles from '../styles/Chat.module.css';
 
 const ChatComponent = ({ eventId }) => {
-  const { authToken, user } = useAuth(); // AuthContext'ten token ve kullanıcı bilgisi alınır
+  const { authToken, user } = useAuth(); 
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [loading, setLoading] = useState(true);
@@ -31,7 +31,7 @@ const ChatComponent = ({ eventId }) => {
         if (Array.isArray(data.messages)) {
           const formattedMessages = data.messages.map((message) => ({
             ...message,
-            sender: message.User || { id: null, username: 'Kullanıcı Bilinmiyor' }, // User bilgisi yoksa varsayılan ayarlanır
+            sender: message.User || { id: null, username: 'Kullanıcı Bilinmiyor' }, 
           }));
           setMessages(formattedMessages);
         } else {
@@ -53,7 +53,7 @@ const ChatComponent = ({ eventId }) => {
   const handleSendMessage = async () => {
     if (newMessage.trim()) {
         const message = {
-            senderId: user.id, // Kullanıcı ID'si AuthContext'ten alınır
+            senderId: user.id, 
             eventId: eventId,
             messageText: newMessage,
             sendTime: new Date().toISOString(),
@@ -77,17 +77,17 @@ const ChatComponent = ({ eventId }) => {
             console.log("Yeni mesaj API yanıtı:", data);
 
             const newMessageData = {
-                id: data.id || data.data.id, // Mesaj ID
+                id: data.id || data.data.id,
                 sender: {
-                    id: user.id, // Gönderici ID
-                    username: user.username, // Gönderici kullanıcı adı
+                    id: user.id, 
+                    username: user.username, 
                 },
-                message_text: data.message_text || data.data.message_text, // Mesaj metni
-                sent_time: data.sent_time || data.data.sent_time, // Gönderim zamanı
+                message_text: data.message_text || data.data.message_text, 
+                sent_time: data.sent_time || data.data.sent_time, 
             };
 
             setMessages((prevMessages) => [...prevMessages, newMessageData]);
-            setNewMessage(''); // Mesaj kutusunu temizle
+            setNewMessage(''); 
         } catch (err) {
             setError(err.message);
         }

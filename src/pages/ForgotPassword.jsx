@@ -20,22 +20,22 @@ function ForgotPassword() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email }), // Email'i backend'e gönderiyoruz
+        body: JSON.stringify({ email }), 
       });
 
-      console.log("API yanıtı alındı:", response); // API yanıtını logla
+      console.log("API yanıtı alındı:", response); 
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.error("Backend Error:", errorData); // Backend hata mesajını konsola yazdır
+        console.error("Backend Error:", errorData); 
         setError(errorData.message || 'Bir hata oluştu.');
       } else {
         const data = await response.json();
-        console.log("Başarıyla şifre sıfırlama e-postası gönderildi:", data); // Başarı durumu
-        setMessage(data.message); // Başarı mesajı
+        console.log("Başarıyla şifre sıfırlama e-postası gönderildi:", data); 
+        setMessage(data.message); 
       }
     } catch (err) {
-      console.error('API Hatası:', err); // API çağrısı sırasında hata
+      console.error('API Hatası:', err); 
       setError('Bir hata oluştu, lütfen tekrar deneyin.');
     } finally {
       setLoading(false);

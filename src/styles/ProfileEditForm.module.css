@@ -1,5 +1,5 @@
 .editForm {
-    max-width: 500px;
+    width: '90vw';
     margin: 20px auto;
     padding: 20px;
     background-color: #f9f9f9;
@@ -8,18 +8,20 @@
   }
   
   .editForm h2 {
+    width: 90vw;
     text-align: center;
     margin-bottom: 20px;
   }
   
   .editForm label {
+    width: 90vw;
     display: block;
     margin-bottom: 10px;
   }
   
   .editForm input,
   .editForm select {
-    width: 100%;
+    width: 90vw;
     padding: 8px;
     margin-top: 5px;
     border: 1px solid #ccc;

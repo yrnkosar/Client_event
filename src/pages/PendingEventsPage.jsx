@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import PendingEvents from '../components/PendingEvents.jsx';
 import { useAuth } from '../AuthContext';
-import '../styles/pending.module.css'
+import '../styles/pending.module.css';
 
 function PendingEventsPage() {
   const [events, setEvents] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { authToken, role } = useAuth(); // AuthContext'ten authToken ve role alındı
-  
+  const { authToken, role } = useAuth(); 
   useEffect(() => {
     const fetchPendingEvents = async () => {
       if (!authToken) {
@@ -33,21 +32,27 @@ function PendingEventsPage() {
         }
 
         const data = await response.json();
-        console.log('Fetched Pending Events:', data); // Gelen veriyi kontrol edin
+        console.log('Fetched Pending Events:', data);
         setEvents(data.events || []);
       } catch (err) {
         console.error('Hata:', err.message);
         setError(err.message);
-      }finally {
-        setLoading(false);}
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchPendingEvents();
-  }, [authToken]); // authToken değiştiğinde tetiklenir
+  }, [authToken]);
 
   const handleApprove = async (eventId) => {
     if (!authToken) return;
-  
+
+    const confirmed = window.confirm('Onay vermek istediğinizden emin misiniz?');
+    if (!confirmed) {
+      return; 
+    }
+
     try {
       const response = await fetch(`http://localhost:3000/api/admin/events/${eventId}/status`, {
         method: 'PATCH',
@@ -56,18 +61,17 @@ function PendingEventsPage() {
           'Content-Type': 'application/json',
         },
       });
-  
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Etkinlik onaylanamadı.');
       }
-  
+
       const data = await response.json();
       if (data.success) {
-        // Sadece onaylanan etkinliği listeden çıkar
         setEvents(events.filter(event => event.id !== eventId));
+        window.alert('Etkinlik onaylandı!');
         console.log('Etkinlik onaylandı:', eventId);
-      
       }
     } catch (err) {
       console.error('Onaylama hatası:', err.message);
@@ -76,6 +80,11 @@ function PendingEventsPage() {
 
   const handleDelete = async (eventId) => {
     if (!authToken) return;
+
+    const confirmed = window.confirm('Etkinliği silmek istediğinizden emin misiniz?');
+    if (!confirmed) {
+      return; 
+    }
 
     try {
       const response = await fetch(`http://localhost:3000/api/admin/events/${eventId}`, {
@@ -92,6 +101,7 @@ function PendingEventsPage() {
       const data = await response.json();
       if (data.message === 'Event deleted') {
         setEvents(events.filter(event => event.id !== eventId));
+        window.alert('Etkinlik silindi!');
         console.log('Etkinlik silindi:', eventId);
       }
     } catch (err) {
@@ -100,28 +110,25 @@ function PendingEventsPage() {
   };
 
   return (
-    <div>
-      <h2>Pending Events</h2>
+    <div className="container">
+      <h2 className="page-title">Pending Events</h2>
       {loading ? (
         <p>Loading events...</p>
       ) : error ? (
         <p>{error}</p>
       ) : (
-        <PendingEvents
-          events={events}
-          onApprove={handleApprove}
-          onDelete={handleDelete}
-        />
+        <div className="card-container">
+          {events.map(event => (
+            <div key={event.id} className="card">
+              <h3>{event.name}</h3>
+              <button onClick={() => handleApprove(event.id)}>Approve</button>
+              <button onClick={() => handleDelete(event.id)}>Delete</button>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );
 }
-const styles = {
-  container: {
-    padding: '20px',
-    backgroundColor: '#f9f9f9',
-    minHeight: '100vh',
-  },
-};
 
 export default PendingEventsPage;

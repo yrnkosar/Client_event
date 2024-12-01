@@ -1,21 +1,21 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Bar, Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement } from 'chart.js';
-import { useAuth } from '../AuthContext';  // Importing useAuth hook
+import { useAuth } from '../AuthContext';  
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement);
 
 function Charts() {
-  const { authToken, userPoints } = useAuth();  // Access authToken and userPoints from context
+  const { authToken, userPoints } = useAuth();  
   const [barData, setBarData] = useState(null);
   const [pieData, setPieData] = useState(null);
-  const [demographicsData, setDemographicsData] = useState(null); // For demographics data
+  const [demographicsData, setDemographicsData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Fetching data from the backend
+
   useEffect(() => {
     const fetchData = async () => {
-      if (!authToken) return;  // Don't fetch if no token exists
+      if (!authToken) return;  
 
       try {
         const headers = { Authorization: `Bearer ${authToken}` };
@@ -36,15 +36,15 @@ function Charts() {
           demographicsRes.json(),
         ]);
 
-        // Handling the demographics data
+      
         const demographicsAgeGroups = ['15-30', '31-45', '46-60', '60+'];
         const maleCounts = demographicsAgeGroups.map(ageGroup => {
           const ageGroupData = demographicsDataResponse.ageDemographics.filter(item => item.age_group === ageGroup && (item.gender === 'Erkek' || item.gender === 'male'));
-          return ageGroupData.length > 0 ? ageGroupData.reduce((acc, item) => acc + item.count, 0) : 0;  // Summing counts for each group
+          return ageGroupData.length > 0 ? ageGroupData.reduce((acc, item) => acc + item.count, 0) : 0; 
         });
         const femaleCounts = demographicsAgeGroups.map(ageGroup => {
           const ageGroupData = demographicsDataResponse.ageDemographics.filter(item => item.age_group === ageGroup && (item.gender === 'Kadın' || item.gender === 'female'));
-          return ageGroupData.length > 0 ? ageGroupData.reduce((acc, item) => acc + item.count, 0) : 0;  // Summing counts for each group
+          return ageGroupData.length > 0 ? ageGroupData.reduce((acc, item) => acc + item.count, 0) : 0; 
         });
 
         setDemographicsData({
@@ -74,7 +74,6 @@ function Charts() {
           ],
         });
 
-        // Handle the category data for pie chart
         if (categoryData && categoryData.eventsByCategory) {
           setPieData({
             labels: categoryData.eventsByCategory.map(item => item.name),
@@ -107,7 +106,7 @@ function Charts() {
     };
 
     fetchData();
-  }, [authToken]);  // Adding authToken as a dependency ensures the component re-fetches if the token changes
+  }, [authToken]);  
 
   if (loading) {
     return <div>Loading...</div>;
@@ -126,7 +125,7 @@ function Charts() {
       </div>
       <div style={styles.chartContainer}>
         <h3>Yaş ve Cinsiyet Demografisi</h3>
-        <Bar data={demographicsData} /> {/* Bar chart for demographics */}
+        <Bar data={demographicsData} /> 
       </div>
     </div>
   );

@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../AuthContext';
-import { useNavigate } from 'react-router-dom'; // useNavigate'yi import ediyoruz
+import { useNavigate } from 'react-router-dom'; 
 import styles from '../styles/ProfileEditForm.module.css';
 import MapComponent from '../components/MapComponent.jsx';
 
 const ProfileEditForm = ({ onSave }) => {
   const { authToken } = useAuth();
-  const navigate = useNavigate(); // useNavigate hook'unu kullanıyoruz
+  const navigate = useNavigate(); 
 
-  // formData'yı boş olarak başlatıyoruz
   const [formData, setFormData] = useState({
     username: '',
     first_name: '',
@@ -22,7 +21,7 @@ const ProfileEditForm = ({ onSave }) => {
     profile_picture_url: '',
   });
 
-  // Kullanıcı verilerini almak için useEffect
+ 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -58,7 +57,7 @@ const ProfileEditForm = ({ onSave }) => {
     fetchUserData();
   }, [authToken]);
 
-  // Form elemanları değiştiğinde formData'yı güncelle
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -67,7 +66,6 @@ const ProfileEditForm = ({ onSave }) => {
     }));
   };
 
-  // Profil verilerini kaydetmek için PUT isteği
   const handleSave = async () => {
     try {
       const response = await fetch('http://localhost:3000/api/user/update-profile', {
@@ -82,9 +80,9 @@ const ProfileEditForm = ({ onSave }) => {
       if (response.ok) {
         const updatedUser = await response.json();
         if (onSave && typeof onSave === 'function') {
-          onSave(updatedUser); // Güncellenmiş veriyi üst bileşene bildir
+          onSave(updatedUser); 
         }
-        navigate('/profile'); // Başarılı kayıttan sonra kullanıcıyı profil sayfasına yönlendiriyoruz
+        navigate('/profile');
       } else {
         console.error('Kullanıcı bilgileri güncellenemedi.');
       }
@@ -93,7 +91,7 @@ const ProfileEditForm = ({ onSave }) => {
     }
   };
 
-  // Veriler yüklenene kadar "Loading..." göster
+  
   if (!formData.username) return <div>Loading...</div>;
 
   return (

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation , useNavigate} from 'react-router-dom';
 
 const ResetPassword = () => {
   const [newPassword, setNewPassword] = useState('');
   const [message, setMessage] = useState('');
   const location = useLocation();
+  const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
   const token = queryParams.get('token');
 
@@ -23,6 +24,9 @@ const ResetPassword = () => {
       if (response.ok) {
         const data = await response.json();
         setMessage('Şifre başarıyla sıfırlandı!');
+        setTimeout(() => {
+          navigate('/'); 
+        }, 2000); 
       } else {
         const errorData = await response.json();
         setMessage(errorData.message || 'Şifre sıfırlama başarısız');

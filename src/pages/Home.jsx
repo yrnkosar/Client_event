@@ -7,16 +7,16 @@ import EventCategory from '../components/EventCategory';
 import styles from '../styles/Home.module.css';
 
 function Home() {
-  const { user, authToken } = useAuth(); // AuthContext'ten kullanıcı bilgisini al
+  const { user, authToken } = useAuth(); 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const [recommendedEvents, setRecommendedEvents] = useState([]); // Önerilen etkinlikler
+  const [recommendedEvents, setRecommendedEvents] = useState([]); 
   const [allEvents, setAllEvents] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
    const eventsPerPage = 9;
  
-   // Sayfalama için state'ler
+
   const [currentRecommendedPage, setCurrentRecommendedPage] = useState(1);
   const [currentAllEventsPage, setCurrentAllEventsPage] = useState(1);
   
@@ -59,7 +59,7 @@ function Home() {
 
   useEffect(() => {
     if (!authToken) {
-      navigate('/'); // Eğer authToken yoksa login sayfasına yönlendir
+      navigate('/'); 
       return;
     }
 
@@ -72,7 +72,6 @@ function Home() {
     fetchData();
   }, [authToken, navigate]);
 
-  // Önerilen etkinlikler için sayfalama
   const indexOfLastRecommendedEvent = currentRecommendedPage * eventsPerPage;
   const indexOfFirstRecommendedEvent = indexOfLastRecommendedEvent - eventsPerPage;
   const currentRecommendedEvents = recommendedEvents.slice(
@@ -82,7 +81,6 @@ function Home() {
 
   const recommendedTotalPages = Math.ceil(recommendedEvents.length / eventsPerPage);
 
-  // Tüm etkinlikler için sayfalama
   const filteredEvents = allEvents.filter(
     (event) =>
       (event.name && event.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
@@ -95,7 +93,7 @@ function Home() {
 
   const allEventsTotalPages = Math.ceil(filteredEvents.length / eventsPerPage);
 
-  // Sayfalama kontrolü için fonksiyon
+ 
   const renderPagination = (totalPages, currentPage, onPageChange) => {
     const paginationButtons = [];
 
@@ -155,7 +153,6 @@ function Home() {
     return paginationButtons;
   };
 
- // Sayfa geçiş fonksiyonları
   const handleRecommendedPageChange = (pageNumber) =>
     setCurrentRecommendedPage(pageNumber);
   const handleAllEventsPageChange = (pageNumber) =>

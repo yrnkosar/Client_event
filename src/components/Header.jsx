@@ -2,24 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import styles from '../styles/Header.module.css';
 import { useAuth } from '../AuthContext.jsx';
-import logo from '../assets/images.png'; // Logo dosyasını içeri aktarın
-import NotificationComponent from './NotificationComponent'; // Yeni bildirim component'ini import ediyoruz
+import logo from '../assets/images.png'; 
+import NotificationComponent from './NotificationComponent'; 
 
 
 const Header = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   
-  const navigate = useNavigate(); // useNavigate hook for navigation
-  const { user, logout, authToken , userPoints } = useAuth(); // Get user and logout from AuthContext
+  const navigate = useNavigate();
+  const { user, logout, authToken , userPoints } = useAuth(); 
   
-  const [isAdmin, setIsAdmin] = useState(false); // Admin status flag
+  const [isAdmin, setIsAdmin] = useState(false);
 
-  // Update role and admin status when `user` changes
   useEffect(() => {
     if (user) {
-      console.log("User object:", user); // Log user to verify role exists
-      setIsAdmin(user.role === 'admin'); // Check if user is admin
+      console.log("User object:", user); 
+      setIsAdmin(user.role === 'admin'); 
     }
   }, [user]);
 
@@ -32,8 +31,8 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    logout(); // Call the logout function from AuthContext
-    navigate('/'); // Redirect to the homepage after logout
+    logout(); 
+    navigate('/'); 
   };
 
   return (
@@ -59,7 +58,7 @@ const Header = () => {
           Profile
         </NavLink>
 
-        {/* Admin Console link, visible only for admins */}
+     
         {isAdmin && (
           <NavLink
             to="/admin"
@@ -71,24 +70,23 @@ const Header = () => {
           </NavLink>
         )}
         
-        {/* Logout butonuna CSS modülünü uygula */}
         <button className={styles.logoutButton} onClick={handleLogout}>Çıkış Yap</button>
   
-        {/* Bildirim butonunu burada tutuyoruz */}
+       
         <button className={styles.notificationButton} onClick={toggleNotifications}>
           Notifications
         </button>
 
-        {/* Bildirim dropdown menüsü */}
+       
         {showNotifications && (
           <div className={styles.notificationsDropdown}>
-            <NotificationComponent /> {/* NotificationComponent burada gösteriliyor */}
+            <NotificationComponent /> 
           </div>
         )}
       </nav>
 
-      {/* Kullanıcı puanlarını göster */}
-      {!isAdmin && ( // Adminler için puan göstergesi kapalı
+      
+      {!isAdmin && ( 
         <div className={styles.pointsDisplay}>
           <img src={logo} alt="Points" className={styles.pointsIcon} />
           {userPoints !== null ? (
@@ -99,14 +97,14 @@ const Header = () => {
         </div>
       )}
 
-      {/* Adminlere özel mesaj */}
+     
       {isAdmin && (
         <div className={styles.pointsDisplay}>
           <img src={logo} alt="Admin" className={styles.pointsIcon} />
           <span>Admin users do not have points.</span>
         </div>
       )}
-      {/* Hamburger menu for mobile view */}
+     
       <button className={styles.burgerButton} onClick={toggleMenu}>
         ☰
       </button>

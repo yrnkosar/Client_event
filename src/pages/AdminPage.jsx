@@ -17,6 +17,7 @@ function AdminPage() {
 
 const styles = {
   container: {
+    width: '80vw',
     display: 'flex',
     height: '200vh',
   },

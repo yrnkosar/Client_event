@@ -5,29 +5,28 @@ import { useAuth} from '../AuthContext.jsx';
 import 'leaflet/dist/leaflet.css';
 import MapComponent from '../components/MapComponent.jsx'; 
 import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from 'react-leaflet';
-import carLogo from '../assets/arabalogo.png'; // Auto logo
-import bikeLogo from '../assets/bisikletlogo.png'; // Bicycle logo
-import walkingLogo from '../assets/yürümelogo.png'; // Pedestrian logo
+import carLogo from '../assets/arabalogo.png'; 
+import bikeLogo from '../assets/bisikletlogo.png';
+import walkingLogo from '../assets/yürümelogo.png';
 function EventDetail() {
   const { id } = useParams();
   const [route, setRoute] = useState(null);
-  const navigate = useNavigate(); // Yönlendirme için useNavigate
+  const navigate = useNavigate(); 
   const [event, setEvent] = useState(null);
   const [showChat, setShowChat] = useState(false);
-  const [showEditForm, setShowEditForm] = useState(false); // Formu açıp kapatmak için state
-  const { user, authToken, setUserPoints } = useAuth(); // Add setUserPoints here
+  const [showEditForm, setShowEditForm] = useState(false); 
+  const { user, authToken, setUserPoints } = useAuth(); 
   const [participants, setParticipants] = useState([]);
   const [isParticipant, setIsParticipant] = useState(false);
-  const [joined, setJoined] = useState(false);  // Declare the 'joined' state
-  const [joinError, setJoinError] = useState(null); // State for error message
+  const [joined, setJoined] = useState(false);  
+  const [joinError, setJoinError] = useState(null); 
   const [errorMessage, setErrorMessage] = useState(null);
-  const [routeDetails, setRouteDetails] = useState(null); // Route details for distance and duration
-  const [selectedMode, setSelectedMode] = useState('auto'); // Default is auto
-  const [weightName, setWeightName] = useState('auto'); // default value for weight_name
-  const [selectedRoute, setSelectedRoute] = useState(null); // Define the state for selectedRoute
+  const [routeDetails, setRouteDetails] = useState(null); 
+  const [selectedMode, setSelectedMode] = useState('auto'); 
+  const [weightName, setWeightName] = useState('auto'); 
+  const [selectedRoute, setSelectedRoute] = useState(null); 
 
   useEffect(() => {
-    // Eğer user veya authToken yoksa, hata almamak için fonksiyonu sonlandır
     if (!user || !authToken) {
       return;
     }
@@ -92,10 +91,9 @@ function EventDetail() {
         if (response.ok) {
             console.log("Katılma başarılı");
             setJoined(true);
-            setIsParticipant(true); // Kullanıcı katılımcı oldu, sohbeti aktif hale getir
+            setIsParticipant(true);
             setShowChat(true);
 
-            // Katılma işlemi başarılı olduktan sonra, kullanıcının puanlarını güncelle
             const userResponse = await fetch(`http://localhost:3000/api/point/user-points`, {
                 headers: {
                     Authorization: `Bearer ${authToken}`,
@@ -106,7 +104,7 @@ function EventDetail() {
                 const userData = await userResponse.json();
                 const totalPoints = userData.points.reduce((total, item) => total + item.points, 0);
                 setUserPoints(totalPoints);  
-                navigate(`/event/${id}`);  // Güncel puanları global state'e set et
+                navigate(`/event/${id}`);  
             } else {
                 console.error("Puanlar alınamadı");
             }
@@ -136,7 +134,7 @@ const handleDeleteEvent = async () => {
 
       if (response.ok) {
         console.log("Etkinlik başarıyla silindi");
-        navigate('/profile'); // Etkinlik silindikten sonra profil sayfasına yönlendir
+        navigate('/profile'); 
       } else {
         console.error('Etkinlik silinirken hata:', await response.text());
       }
@@ -183,12 +181,12 @@ const handleJoinChat = () => {
     { mode: "pedestrian", label: "Yaya", logo: walkingLogo },
   ];
   const handleModeClick = (mode) => {
-    setSelectedMode(mode); // Seçilen modu güncelle
-    handleCalculateRoute(mode); // Seçilen modu göndererek rota hesapla
+    setSelectedMode(mode); 
+    handleCalculateRoute(mode); 
   };
   const handleModeChange = (value) => {
     setSelectedMode(value);
-    handleCalculateRoute(value); // Fetch route for selected mode
+    handleCalculateRoute(value); 
   };
   const handleCalculateRoute = async (mode) => {
     try {
@@ -198,7 +196,7 @@ const handleJoinChat = () => {
           Authorization: `Bearer ${authToken}`,
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ mode, weight_name: mode }), // mode'u weight_name olarak kullanıyoruz
+        body: JSON.stringify({ mode, weight_name: mode }), 
       });
 
       if (!response.ok) {
@@ -206,16 +204,14 @@ const handleJoinChat = () => {
       }
 
       const data = await response.json();
-      //console.log("API Response:", data);
       console.log("Routes received:", data.routes);
 
-     // Seçilen moda uygun route'u bul
     const selectedRoute = data.routes.find(route => route.weight_name === selectedMode);
     if (!selectedRoute) {
       throw new Error(`No route found for mode: ${mode}`);
     }
 
-    console.log("Selected Route weight_name:", selectedRoute.weight_name); // Doğru seçimi kontrol et
+    console.log("Selected Route weight_name:", selectedRoute.weight_name);
 
     const coordinates = selectedRoute.geometry.coordinates;
     const geoJsonRoute = {
@@ -244,9 +240,7 @@ const handleJoinChat = () => {
     }
   };
     if (!event) return <p>Etkinlik detayları yükleniyor...</p>;
-  const isOwner = user?.id === event.user_id; // Kullanıcının etkinlik sahibi olup olmadığını kontrol ediyoruz
-  //const eventCoordinates = [event.latitude, event.longitude];
-
+  const isOwner = user?.id === event.user_id; 
 
   const renderRouteDetails = (mode) => {
     if (routeDetails) {
@@ -285,11 +279,11 @@ const handleJoinChat = () => {
         cursor: "pointer",
         display: "flex",
         alignItems: "center",
-        gap: '30px', // Buton içeriği arasındaki boşluğu artırıyoruz
-        fontSize: '18px', // Buton yazı boyutunu büyütüyoruz
+        gap: '30px',
+        fontSize: '18px', 
       }
 }
-      onClick={() => handleModeClick(button.mode)} // Tıklama ile doğrudan modu gönder
+      onClick={() => handleModeClick(button.mode)} 
     >
       <img 
       src={button.logo} 
@@ -307,18 +301,16 @@ const handleJoinChat = () => {
   {route && (
     <>
       <GeoJSON data={route} />
-      {/* Başlangıç Noktasını İşaretliyoruz */}
       <Marker position={[event.latitude, event.longitude]}>
         <Popup>Başlangıç Noktası</Popup>
       </Marker>
 
-      {/* Eğer selectedRoute varsa, bitiş noktasını işaretle */}
       {selectedRoute ? (
         <Marker position={selectedRoute.geometry.coordinates[selectedRoute.geometry.coordinates.length - 1]}>
           <Popup>Bitiş Noktası</Popup>
         </Marker>
       ) : (
-        // Eğer selectedRoute yoksa, yalnızca bitiş noktasını işaretle
+
         <Marker position={[event.latitude, event.longitude]}>
           <Popup>Bitiş Noktası</Popup>
         </Marker>
@@ -366,7 +358,6 @@ const handleJoinChat = () => {
   );
 }
 
-// Düzenleme formu bileşeni
 const EventEditForm = ({ event, onSave }) => {
   const [formData, setFormData] = useState({
     etkinlikAdi: event.name,
@@ -394,9 +385,9 @@ const EventEditForm = ({ event, onSave }) => {
       date: formData.tarih,
       time: formData.saat,
       duration: formData.sure,
-      latitude: parseFloat(event.latitude), // Latitude'i doğru formatta gönderin
-      longitude: parseFloat(event.longitude), // Longitude'i doğru formatta gönderin
-      subcategory_id: event.Subcategory?.id, // Backend'in beklediği ID'yi ekleyin   
+      latitude: parseFloat(event.latitude), 
+      longitude: parseFloat(event.longitude), 
+      subcategory_id: event.Subcategory?.id, 
     };
     onSave(updatedEvent);
   };

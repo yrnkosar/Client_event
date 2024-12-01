@@ -1,13 +1,13 @@
 import React, { useState , useEffect} from 'react';
 import '../styles/EventAdd.css';
 import { useAuth } from '../AuthContext'; 
-import { useNavigate } from 'react-router-dom'; // Importing useNavigate
-import SuccessModal from '../components/SuccessModal'; // Modal bileşenini içeri aktarın
+import { useNavigate } from 'react-router-dom'; 
+import SuccessModal from '../components/SuccessModal'; 
 
 
 const EventAdd = () => {
-  const { authToken } = useAuth(); // Fetching the authToken to get the user info
-  const navigate = useNavigate(); // For navigation
+  const { authToken } = useAuth(); 
+  const navigate = useNavigate(); 
   const [eventData, setEventData] = useState({
     title: '',
     description: '',
@@ -20,8 +20,8 @@ const EventAdd = () => {
     longitude: null,
   });
 
-  const [categories, setCategories] = useState([]); // To store the fetched categories
-  const [showSuccessModal, setShowSuccessModal] = useState(false); // For showing the success modal
+  const [categories, setCategories] = useState([]); 
+  const [showSuccessModal, setShowSuccessModal] = useState(false); 
  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -44,7 +44,7 @@ const EventAdd = () => {
         });
         const data = await response.json();
         if (data) {
-          setCategories(data); // Assuming data is the list of categories
+          setCategories(data); 
         }
       } catch (error) {
         console.error('Kategori verileri alınırken hata oluştu:', error);
@@ -52,7 +52,7 @@ const EventAdd = () => {
     };
     
     fetchCategories();
-  }, [authToken]); // Run the fetch when authToken changes
+  }, [authToken]); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -66,12 +66,11 @@ const EventAdd = () => {
           longitude: coordinates.lon
         });
   
-        // API'ye event verisini gönder
         const response = await fetch('http://localhost:3000/api/event/create-event', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${authToken}` // Adding Authorization header with token
+            'Authorization': `Bearer ${authToken}` 
           },
           body: JSON.stringify({
             name: eventData.title,
@@ -97,7 +96,7 @@ const EventAdd = () => {
       alert('Lütfen bir konum girin');
     }
   };
-  // Adresin koordinata dönüştürülmesi
+
   const getCoordinates = async (address) => {
     const endpoint = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&addressdetails=1`;
 
@@ -219,7 +218,6 @@ const EventAdd = () => {
           <button type="submit" className="submit-btn">Etkinlik Ekle</button>
         </div>
 
-        {/* Koordinatları göster */}
         {eventData.latitude && eventData.longitude && (
           <div className="coordinates-display">
             <p>Koordinatlar: </p>
@@ -227,7 +225,7 @@ const EventAdd = () => {
           </div>
         )}
       </form>
- {/* Modal */}
+
        <SuccessModal
         isVisible={showSuccessModal}
         onClose={handleModalClose}

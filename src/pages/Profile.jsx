@@ -5,17 +5,17 @@ import ProfileEditForm from '../components/ProfileEditForm';
 import { Link,useParams, useNavigate } from 'react-router-dom';
 import styles from '../styles/Profile.module.css';
 import MapComponent from '../components/MapComponent.jsx';
-import UserPoints from '../components/UserPoints'; // Puan bileşenini içe aktar
+import UserPoints from '../components/UserPoints'; 
 import '../styles/Profile.module.css';
 
 const Profile = () => {
-  const { id } = useParams(); // Dinamik user ID
+  const { id } = useParams(); 
   const { authToken } = useAuth();
   const [user, setUser] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [createdEvents, setCreatedEvents] = useState([]);
   const [participatedEvents, setParticipatedEvents] = useState([]);
-  const navigate = useNavigate();  // Initialize navigate
+  const navigate = useNavigate();  
   
   useEffect(() => {
     const fetchUserData = async () => {
@@ -104,7 +104,7 @@ const Profile = () => {
           <>
             <div className={styles.profileDetails}>
             <img
-             src={user.profile_picture_url || 'default-avatar.jpg'} // Ensure the field name is correct
+             src={user.profile_picture_url || 'default-avatar.jpg'} 
              alt="User Profile"
              className={styles.profilePicture}
              />
@@ -117,7 +117,6 @@ const Profile = () => {
                 <p><strong>Cinsiyet:</strong> {user.gender}</p>
                 <p><strong>Telefon:</strong> {user.phone_number}</p>
 
-                {/* Harita Bileşeni */}
                 <p><strong>Konum:</strong></p>
                 {user.location_latitude && user.location_longitude ? (
                   <MapComponent
@@ -140,7 +139,7 @@ const Profile = () => {
   <div className={styles.createEventButtonContainer}>
     <button
       className={styles.createEventButton}
-      onClick={() => navigate('/event-add')} // Navigate to the event creation page
+      onClick={() => navigate('/event-add')} 
     >
       Etkinlik Oluştur
     </button>
@@ -155,7 +154,7 @@ const Profile = () => {
     </button>
   </div>
 </div>
-              {/* Katıldığı Etkinlikler */}
+             
             <div className={styles.userEvents}>
               <h3>Katıldığınız Etkinlikler</h3>
               {participatedEvents.length > 0 ? (
@@ -186,7 +185,7 @@ const Profile = () => {
               )}
             </div>
 
-            {/* Oluşturduğunuz Etkinlikler */}
+       
             <div className={styles.userCreatedEvents}>
               <h3>Oluşturduğunuz Etkinlikler</h3>
               {createdEvents.length > 0 ? (

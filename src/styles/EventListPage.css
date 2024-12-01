@@ -1,20 +1,20 @@
-/* Etkinlik Listeleme Sayfası */
+
 .event-list-page {
-  max-width: 100vw;
+  max-width: 90vw;
   padding: 20px;
   font-family: 'Arial', sans-serif;
   background-color: #f8f9fa;
   min-height: 100vh;
 }
 .event-list-title {
-  width: 90vw;
+  width: 80vw;
   text-align: center;
   font-size: 2rem;
   color: #333;
   margin-bottom: 20px;
 }
 .search-bar {
-  width: 87vw;
+  width: 80vw;
   text-align: center;
   margin-bottom: 20px;
 }
@@ -29,9 +29,9 @@
   border: 1px solid #ccc;
   border-radius: 5px;
 }
-/* Tablo düzeni */
+
 .event-list-table {
-  width: 90vw;
+  width: 80vw;
   border-collapse: collapse;
   background: white;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -78,7 +78,7 @@
   background-color: #c82333;
 }
 
-/* Sayfalama */
+
 .pagination {
   display: flex;
   justify-content: center;
@@ -122,10 +122,10 @@
     background: #fff;
     border-radius: 8px;
     padding: 20px;
-    max-width: 90%; /* Genişlik ekranın %90'ını geçmesin */
-    max-height: 90%; /* Yükseklik ekranın %90'ını geçmesin */
-    width: 600px; /* Varsayılan genişlik */
-    overflow-y: auto; /* Yükseklik aşıldığında dikey kaydırma */
+    max-width: 90%;
+    max-height: 90%; 
+    width: 600px; 
+    overflow-y: auto; 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     position: relative;
   }
@@ -156,7 +156,7 @@
     background: #c0392b;
   }
   
-  /* Form öğeleri */
+ 
   .modal form div {
     margin-bottom: 15px;
   }
@@ -179,7 +179,7 @@
   }
   
   .modal form textarea {
-    resize: vertical; /* Yalnızca dikey yeniden boyutlandırmaya izin ver */
+    resize: vertical;
   }
   
   .modal-actions {

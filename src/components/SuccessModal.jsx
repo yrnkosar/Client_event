@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/Modal.css'; // Modal tasarımı için CSS
+import '../styles/Modal.css'; 
 
 const SuccessModal = ({ isVisible, onClose, message }) => {
   if (!isVisible) return null;

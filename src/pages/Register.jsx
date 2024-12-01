@@ -18,7 +18,6 @@ const Register = () => {
     profile_picture_url: '',
   });
 
-  // Geolocation kullanarak mevcut konumu al
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(success, error);
@@ -30,7 +29,6 @@ const Register = () => {
     setLatitude(latitude);
     setLongitude(longitude);
 
-    // OpenStreetMap Nominatim API ile lokasyon adı al
     try {
       const response = await fetch(
         `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
@@ -47,7 +45,6 @@ const Register = () => {
     console.warn(`ERROR(${err.code}): ${err.message}`);
   };
 
-  // Profile URL değiştiğinde state'i güncelle
   const handleUrlChange = (e) => {
     const url = e.target.value;
     setUserData((prevData) => ({
@@ -58,8 +55,7 @@ const Register = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
-    // Latitude ve Longitude verilerini kullanıcı verilerine ekle
+
     const userDataWithLocation = {
       ...userData,
       location_latitude: latitude,
@@ -67,13 +63,13 @@ const Register = () => {
     };
   
     try {
-      // Backend'e POST isteği gönderiyoruz
+    
       const response = await fetch('http://localhost:3000/api/user/register', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json', // JSON formatı gönderiyoruz
+          'Content-Type': 'application/json', 
         },
-        body: JSON.stringify(userDataWithLocation), // Veriyi JSON formatında gönderiyoruz
+        body: JSON.stringify(userDataWithLocation), 
       });
   
       if (response.ok) {
@@ -81,7 +77,7 @@ const Register = () => {
 
       
         console.log("Registration successful");
-        navigate('/'); // İlgi alanı seçme sayfasına yönlendirme
+        navigate('/');
       } else {
         const errorData = await response.json();
         console.error("Registration failed:", errorData.message);
@@ -91,7 +87,6 @@ const Register = () => {
     }
   };
 
-  // Formdaki her input değiştiğinde userData'yı güncelle
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserData((prev) => ({
