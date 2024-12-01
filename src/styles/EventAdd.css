@@ -1,7 +1,7 @@
 /* src/pages/EventAdd.css */
 .event-add-container {
-    width: 100%;
-    max-width: 800px;
+    width: 100vw;
+    max-width: 1000px;
     margin: 40px auto;
     padding: 20px;
     background-color: #f9f9f9;
@@ -10,6 +10,7 @@
   }
   
   h2 {
+    
     text-align: center;
     color: #333;
     font-size: 2rem;
@@ -19,6 +20,7 @@
   .event-form {
     display: flex;
     flex-direction: column;
+    align-items: center; /* Formu yatayda ortalar */
   }
   .modal {
     position: fixed;
@@ -54,6 +56,8 @@
   }
   .form-group {
     margin-bottom: 20px;
+    width: 100%; /* Form alanının tamamına yayılmasını sağlar */
+    max-width: 600px; /* Maksimum genişlik sınırlaması */
   }
   
   label {

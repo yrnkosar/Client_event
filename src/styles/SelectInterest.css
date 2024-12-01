@@ -1,0 +1,73 @@
+/* src/pages/SelectInterests.css */
+.container {
+    width: 90vw;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+  
+  .card {
+    width: 200px;
+    margin: 10px;
+    padding: 15px;
+    background-color: rgb(212, 226, 251);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .card:hover {
+    background-color: rgb(226, 189, 240);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  .card label {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #444;
+  }
+  
+  .card input {
+    margin-top: 8px;
+  }
+  
+  button {
+    padding: 12px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+    display: block;
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+
+  h1 {
+    font-size: 5.5rem; /* Adjusted font size */
+    text-align: center;
+    margin-bottom: 10px; /* Add some space below */
+    font-weight: bold;
+    color: #333; /* Darker color for the title */
+}
+
+h2 {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #666; /* Slightly lighter color */
+    margin-bottom: 30px; /* Add space below h2 */
+    font-style: italic;
+}

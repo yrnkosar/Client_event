@@ -5,9 +5,9 @@ import { useAuth} from '../AuthContext.jsx';
 import 'leaflet/dist/leaflet.css';
 import MapComponent from '../components/MapComponent.jsx'; 
 import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from 'react-leaflet';
-import carLogo from '../assets/images.png'; // Auto logo
-import bikeLogo from '../assets/images.png'; // Bicycle logo
-import walkingLogo from '../assets/images.png'; // Pedestrian logo
+import carLogo from '../assets/arabalogo.png'; // Auto logo
+import bikeLogo from '../assets/bisikletlogo.png'; // Bicycle logo
+import walkingLogo from '../assets/yürümelogo.png'; // Pedestrian logo
 function EventDetail() {
   const { id } = useParams();
   const [route, setRoute] = useState(null);
@@ -176,6 +176,7 @@ const handleJoinChat = () => {
       console.error("Etkinlik güncellenirken hata:", error);
     }
   };
+  
   const modeButtons = [
     { mode: "auto", label: "Araba", logo: carLogo },
     { mode: "cyclability", label: "Bisiklet", logo: bikeLogo },
@@ -276,7 +277,7 @@ const handleJoinChat = () => {
     <button
       key={button.mode}
       style={{
-        padding: "10px",
+        padding:'20px 30px',
         border: "1px solid #ccc",
         backgroundColor: selectedMode === button.mode ? "#007bff" : "#fff",
         color: selectedMode === button.mode ? "#fff" : "#000",
@@ -284,12 +285,17 @@ const handleJoinChat = () => {
         cursor: "pointer",
         display: "flex",
         alignItems: "center",
-        gap: "10px",
-      }}
+        gap: '30px', // Buton içeriği arasındaki boşluğu artırıyoruz
+        fontSize: '18px', // Buton yazı boyutunu büyütüyoruz
+      }
+}
       onClick={() => handleModeClick(button.mode)} // Tıklama ile doğrudan modu gönder
     >
-      <img src={button.logo} alt={button.label} style={{ width: "20px", height: "20px" }} />
-      {button.label}
+      <img 
+      src={button.logo} 
+      alt={button.label} 
+      style={{ width: "100px", height: "100px" }} />
+    
     </button>
   ))}
 </div>
@@ -473,7 +479,7 @@ const EventEditForm = ({ event, onSave }) => {
 
 const styles = {
   container: {
-    maxWidth: '600px',
+    Width: '100vw',
     margin: '0 auto',
     padding: '20px',
     border: '1px solid #ddd',

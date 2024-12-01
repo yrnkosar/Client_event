@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
-
+import '../styles/SelectInterest.css'
 const SelectInterests = () => {
     const { authToken } = useAuth();
     const navigate = useNavigate();
@@ -97,26 +97,27 @@ const handleSave = async () => {
     }
 };
 
-  return (
-    <div>
-  <h1>İlgi Alanlarınızı Seçin</h1>
-  <ul>
-    {subcategories.map((subcategory) => (
-      <li key={subcategory.id}>
-        <label>
-          <input
-            type="checkbox"
-            checked={selectedInterests.includes(subcategory.id)}
-            onChange={() => handleInterestToggle(subcategory.id)}
-          />
-          {subcategory.name}
-        </label>
-      </li>
-    ))}
-  </ul>
-  <button onClick={handleSave}>Kaydet</button>
-</div>
-  );
+return (
+  <div>
+    <h1>İlgi Alanlarınızı Seçin </h1>
+    <h2>Önceki seçimleriniz yok sayılacaktır.</h2>
+    <div className="container">
+      {subcategories.map((subcategory) => (
+        <div className="card" key={subcategory.id}>
+          <label>
+            <input
+              type="checkbox"
+              checked={selectedInterests.includes(subcategory.id)}
+              onChange={() => handleInterestToggle(subcategory.id)}
+            />
+            {subcategory.name}
+          </label>
+        </div>
+      ))}
+    </div>
+    <button onClick={handleSave}>Kaydet</button>
+  </div>
+);
 };
 
 export default SelectInterests;

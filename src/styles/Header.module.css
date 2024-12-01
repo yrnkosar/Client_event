@@ -42,10 +42,24 @@
 
 .link {
   margin-left: 20px;
-  text-decoration: none;
-  color: black;
+  text-decoration: none;  /* Alt çizgiyi kaldır */
+  color: #333;  /* Normalde koyu gri renk */
+  font-size: 18px;  /* Linklerin font boyutunu büyüt */
+  font-weight: 500;  /* Daha kalın font */
+  transition: color 0.3s, transform 0.3s ease;  /* Renk ve transform geçişi */
+}
+/* Link aktif olduğunda farklı stil */
+.link.active {
+  color: #007bff;  /* Mavi renk aktif link için */
+  font-weight: bold;  /* Aktif linki kalın yap */
+  transform: scale(1.05);  /* Aktif linki hafif büyüt */
 }
 
+/* Link üzerine gelindiğinde (hover) stil */
+.link:hover {
+  color: #0056b3;  /* Hover sırasında daha koyu mavi */
+  text-decoration: underline;  /* Altını çizin */
+}
 .active {
   color: blue;
 }
@@ -64,7 +78,7 @@
 }
 
 .notificationButton {
-  background-color: #4CAF50; /* Butonun yeşil renkte olması için */
+  background-color: rgb(102, 148, 228);
   color: white;
   padding: 10px;
   border: none;
@@ -73,12 +87,12 @@
 }
 
 .notificationButton:hover {
-  background-color: #45a049; /* Hover efekti */
+  background-color: #125480; /* Hover efekti */
 }
 
 .burgerButton {
   display: none;
-  background: none;
+  background-color: rgb(200, 158, 215);
   border: none;
   font-size: 24px;
   cursor: pointer;
@@ -108,4 +122,25 @@
   .burgerButton {
     display: block;
   }
+}
+/* Logout Button stilini CSS modülünde tanımlayın */
+.logoutButton {
+  background-color: #ec5976;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  margin-left: 20px;
+}
+
+.logoutButton:hover {
+  background-color: #d32f2f;
+  transform: scale(1.05);
+}
+
+.logoutButton:focus {
+  outline: none;
 }

@@ -71,9 +71,8 @@ const Header = () => {
           </NavLink>
         )}
         
-        <button className={styles.link} onClick={handleLogout}>
-          Logout
-        </button>
+        {/* Logout butonuna CSS modülünü uygula */}
+        <button className={styles.logoutButton} onClick={handleLogout}>Çıkış Yap</button>
   
         {/* Bildirim butonunu burada tutuyoruz */}
         <button className={styles.notificationButton} onClick={toggleNotifications}>
