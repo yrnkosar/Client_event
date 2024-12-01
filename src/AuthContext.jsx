@@ -6,39 +6,39 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [authToken, setAuthToken] = useState(localStorage.getItem('authToken') || null);
   const [user, setUser] = useState(null);
-  const [role, setRole] = useState(null);  // New state for role
-  const [userPoints, setUserPoints] = useState(null); // New: Add userPoints state
+  const [role, setRole] = useState(null); 
+  const [userPoints, setUserPoints] = useState(null); 
  
   useEffect(() => {
     if (authToken) {
       try {
-        const decoded = jwtDecode(authToken);  // Decode the token
-        setUser(decoded);  // Store the decoded user information
-        setRole(decoded.role);  // Set the role from the decoded user info
-        console.log('Decoded user:', decoded); // Log the decoded user
-        fetchUserPoints(decoded.id, authToken); // Fetch user points at login
+        const decoded = jwtDecode(authToken); 
+        setUser(decoded);  
+        setRole(decoded.role);  
+        console.log('Decoded user:', decoded);
+        fetchUserPoints(decoded.id, authToken); 
       } catch (error) {
         console.error('Invalid token:', error);
       }
     } else {
-      setUser(null);  // If no authToken, reset user
-      setRole(null);  // Reset role as well
-      setUserPoints(null); // Reset points   
+      setUser(null);  
+      setRole(null);  
+      setUserPoints(null); 
     }
-    console.log('AuthContext user:', user);  // Log user info
-    console.log('AuthContext role:', role);  // Log role
-    console.log('AuthContext token:', authToken);  // Log authToken
-  }, [authToken]); // Run this effect when authToken changes
+    console.log('AuthContext user:', user);  
+    console.log('AuthContext role:', role);  
+    console.log('AuthContext token:', authToken);  
+  }, [authToken]); 
 
   const setAuthTokenAndUser = (token) => {
-    setAuthToken(token);  // Set the token in state
-    localStorage.setItem('authToken', token);  // Save token in localStorage
+    setAuthToken(token);  
+    localStorage.setItem('authToken', token);  
     if (token) {
       try {
         const decoded = jwtDecode(token);
         setUser(decoded);
         setRole(decoded.role);
-        fetchUserPoints(decoded.id, token); // Fetch user points immediately after login
+        fetchUserPoints(decoded.id, token); 
       } catch (error) {
         console.error('Error decoding token:', error);
       }
@@ -46,11 +46,11 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    setAuthToken(null);  // Clear the token
-    setUser(null);  // Clear the user data
-    setRole(null);  // Clear the role
-    setUserPoints(null); // Clear points on logout
-    localStorage.removeItem('authToken');  // Remove token from localStorage
+    setAuthToken(null);  
+    setUser(null);  
+    setRole(null);  
+    setUserPoints(null); 
+    localStorage.removeItem('authToken');  
   };
   
   const fetchUserPoints = async (userId, token) => {
@@ -66,13 +66,13 @@ export const AuthProvider = ({ children }) => {
       }
       const data = await response.json();
       const totalPoints = data.points.reduce((sum, pointEntry) => sum + pointEntry.points, 0);
-      setUserPoints(totalPoints); // Calculate and set total points
+      setUserPoints(totalPoints); 
     } catch (error) {
       console.error('Error fetching user points:', error);
     }
   };
   return (
-    <AuthContext.Provider value={{ authToken, user, role, setAuthToken: setAuthTokenAndUser, userPoints, // Expose userPoints
+    <AuthContext.Provider value={{ authToken, user, role, setAuthToken: setAuthTokenAndUser, userPoints, 
       setUserPoints,logout, fetchUserPoints }}>
       {children}
     </AuthContext.Provider>

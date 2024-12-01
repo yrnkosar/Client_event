@@ -43,20 +43,20 @@
 }
 
 nav ul {
-  list-style-type: none; /* Remove default list styling */
-  padding: 0; /* Remove default padding */
+  list-style-type: none; 
+  padding: 0; 
 }
 
 nav li {
-  display: inline; /* Display links inline */
-  margin-right: 15px; /* Space between links */
+  display: inline;
+  margin-right: 15px; 
 }
 
 nav a {
-  text-decoration: none; /* Remove underline from links */
-  color: blue; /* Change link color */
+  text-decoration: none; 
+  color: blue; 
 }
 
 nav a:hover {
-  text-decoration: underline; /* Underline on hover */
+  text-decoration: underline; 
 }
