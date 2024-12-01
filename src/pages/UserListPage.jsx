@@ -85,6 +85,43 @@ const UserListPage = () => {
     }
   };
 
+   // Pagination logic
+   const generatePagination = () => {
+    const pages = [];
+    const totalPagesToShow = 5; // Show a total of 5 pages at a time
+
+    if (totalPages <= totalPagesToShow) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (currentPage <= totalPagesToShow - 2) {
+        for (let i = 1; i <= totalPagesToShow; i++) {
+          pages.push(i);
+        }
+        pages.push('...');
+        pages.push(totalPages);
+      } else if (currentPage >= totalPages - (totalPagesToShow - 2)) {
+        pages.push(1);
+        pages.push('...');
+        for (let i = totalPages - (totalPagesToShow - 1); i <= totalPages; i++) {
+          pages.push(i);
+        }
+      } else {
+        pages.push(1);
+        pages.push('...');
+        for (let i = currentPage - 2; i <= currentPage + 2; i++) {
+          pages.push(i);
+        }
+        pages.push('...');
+        pages.push(totalPages);
+      }
+    }
+
+    return pages;
+  };
+
+
   return (
     <div className="user-list-page">
       <h1 className="user-list-title">Kullanıcı Yönetim Paneli</h1>
@@ -136,50 +173,49 @@ const UserListPage = () => {
         </tbody>
       </table>
 
-      {/* Pagination */}
+       {/* Pagination */}
       <div className="pagination">
-        {Array.from({ length: totalPages }, (_, index) => (
+        {generatePagination().map((page, index) => (
           <button
             key={index}
-            className={`pagination-button ${
-              index + 1 === currentPage ? 'active' : ''
-            }`}
-            onClick={() => handlePageChange(index + 1)}
+            className={`pagination-button ${page === currentPage ? 'active' : ''}`}
+            onClick={() => page !== '...' && handlePageChange(page)}
+            disabled={page === '...'}
           >
-            {index + 1}
+            {page}
           </button>
         ))}
       </div>
 
- {/* Kullanıcı Detayları Modalı */}
- {isModalOpen && modalUser && (
-        <div className="modal-backdrop">
-          <div className="modal">
-            <h2>Kullanıcı Detayları</h2>
-            <p>
-              <strong>Adı:</strong> {modalUser.first_name} {modalUser.last_name}
-            </p>
-            <p>
-              <strong>Email:</strong> {modalUser.email}
-            </p>
-            <p>
-              <strong>Rol:</strong> {modalUser.role}
-            </p>
-            <p>
-              <strong>Telefon:</strong> {modalUser.phone_number}
-            </p>
-            <p>
-              <strong>Doğum Tarihi:</strong> {modalUser.birth_date}
-            </p>
-            <p>
-              <strong>Konum:</strong> Latitude: {modalUser.location_latitude}, Longitude: {modalUser.location_longitude}
-            </p>
-            <button className="modal-close" onClick={closeModal}>
-              Kapat
-            </button>
-          </div>
-        </div>
-      )}
+{/* Kullanıcı Detayları Modalı */}
+{isModalOpen && modalUser && (
+  <div className="modal-backdrop">
+    <div className="modal">
+      <h2>Kullanıcı Detayları</h2>
+      <p>
+        <strong>Adı:</strong> {modalUser.first_name} {modalUser.last_name}
+      </p>
+      <p>
+        <strong>Email:</strong> {modalUser.email}
+      </p>
+      <p>
+        <strong>Rol:</strong> {modalUser.role}
+      </p>
+      <p>
+        <strong>Telefon:</strong> {modalUser.phone_number}
+      </p>
+      <p>
+        <strong>Doğum Tarihi:</strong> {modalUser.birth_date}
+      </p>
+      <p>
+        <strong>Konum:</strong> Latitude: {modalUser.location_latitude}, Longitude: {modalUser.location_longitude}
+      </p>
+      <button className="modal-close" onClick={closeModal}>
+        Kapat
+      </button>
+    </div>
+  </div>
+)}
     </div>
   );
 };

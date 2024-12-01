@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link , useNavigate} from 'react-router-dom';
 import { FaChartBar, FaClipboardList, FaFileAlt, FaUsers, FaCalendarAlt, FaCog, FaUser, FaSignOutAlt } from 'react-icons/fa';
-
+import styles from '../styles/Sidebar.module.css';  // Import CSS module
 import { useAuth } from '../AuthContext.jsx';
 
 function Sidebar() {
@@ -16,54 +16,46 @@ function Sidebar() {
     navigate('/'); // Ana sayfaya yönlendir
   };
   return (
-    <div style={{ ...styles.sidebar, width: isOpen ? '200px' : '50px' }}>
-      <button onClick={toggleSidebar} style={styles.toggleButton}>
+    <div className={styles.sidebar} style={{ width: isOpen ? '200px' : '50px' }}>
+      <button onClick={toggleSidebar} className={styles.toggleButton}>
         {isOpen ? '◀' : '▶'}
       </button>
-      {isOpen && <h2>Admin Paneli</h2>}
+      {isOpen && <h2 className={styles.sidebarTitle}>Admin Paneli</h2>}
       <nav>
-        <ul style={styles.navList}>
-          <li style={styles.navItem}>
-            <Link to="/admin/pending-events" style={styles.link}>
-              <FaClipboardList style={styles.icon} />
+        <ul className={styles.navList}>
+          <li className={styles.navItem}>
+            <Link to="/admin/pending-events" className={styles.link}>
+              <FaClipboardList className={styles.icon} />
               {isOpen && <span>Onay Bekleyenler</span>}
             </Link>
           </li>
-          <li style={styles.navItem}>
-            <Link to="/admin/reports" style={styles.link}>
-              <FaFileAlt style={styles.icon} />
-              {isOpen && <span>Detaylı Rapor</span>}
-            </Link>
-          </li>
-          <li style={styles.navItem}>
-            <Link to="/admin/users" style={styles.link}>
-              <FaUsers style={styles.icon} />
+          <li className={styles.navItem}>
+            <Link to="/admin/users" className={styles.link}>
+              <FaUsers className={styles.icon} />
               {isOpen && <span>Kullanıcı Listesi</span>}
             </Link>
           </li>
-          <li style={styles.navItem}>
-            <Link to="/admin/events" style={styles.link}>
-              <FaCalendarAlt style={styles.icon} />
+          <li className={styles.navItem}>
+            <Link to="/admin/events" className={styles.link}>
+              <FaCalendarAlt className={styles.icon} />
               {isOpen && <span>Etkinlik Listesi</span>}
             </Link>
           </li>
-          <li style={styles.navItem}>
-            <Link to="/admin/categories" style={styles.link}>
-              <FaCog style={styles.icon} />
+          <li className={styles.navItem}>
+            <Link to="/admin/categories" className={styles.link}>
+              <FaCog className={styles.icon} />
               {isOpen && <span>Kategori Ekle</span>}
             </Link>
           </li>
-          {/* Profil butonu */}
-          <li style={styles.navItem}>
-            <Link to="/profile" style={styles.link}>
-              <FaUser style={styles.icon} />
+          <li className={styles.navItem}>
+            <Link to="/profile" className={styles.link}>
+              <FaUser className={styles.icon} />
               {isOpen && <span>Profilim</span>}
             </Link>
           </li>
-          {/* Çıkış yapma butonu */}
-          <li style={styles.navItem}>
-            <button onClick={handleLogout} style={styles.logoutButton}>
-              <FaSignOutAlt style={styles.icon} />
+          <li className={styles.navItem}>
+            <button onClick={handleLogout} className={styles.logoutButton}>
+              <FaSignOutAlt className={styles.icon} />
               {isOpen && <span>Çıkış Yap</span>}
             </button>
           </li>
@@ -72,49 +64,6 @@ function Sidebar() {
     </div>
   );
 }
-const styles = {
-  sidebar: {
-    backgroundColor: '#333',
-    color: '#fff',
-    padding: '20px',
-    transition: 'width 0.3s',
-  },
-  toggleButton: {
-    backgroundColor: 'transparent',
-    border: 'none',
-    color: '#fff',
-    cursor: 'pointer',
-    marginBottom: '10px',
-  },
-  navList: {
-    listStyleType: 'none',
-    padding: 0,
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '10px',
-  },
-  navItem: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  link: {
-    color: '#fff',
-    textDecoration: 'none',
-    display: 'flex',
-    alignItems: 'center',
-  },
-  logoutButton: {
-    backgroundColor: 'transparent',
-    border: 'none',
-    color: '#fff',
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-  },
-  icon: {
-    fontSize: '20px',
-    marginRight: '10px',
-  },
-};
+
 
 export default Sidebar;

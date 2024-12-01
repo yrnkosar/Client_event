@@ -50,47 +50,49 @@ const ChatComponent = ({ eventId }) => {
     }
   }, [eventId, authToken]);
 
-  // Yeni mesaj gönderme işlemi
   const handleSendMessage = async () => {
     if (newMessage.trim()) {
-      const message = {
-        senderId: user.id, // Kullanıcı ID'si AuthContext'ten alınır
-        eventId: eventId,
-        messageText: newMessage,
-        sendTime: new Date().toISOString(),
-      };
-
-      try {
-        const response = await fetch(`http://localhost:3000/api/message/send-message`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${authToken}`,
-          },
-          body: JSON.stringify(message),
-        });
-
-        if (!response.ok) {
-          throw new Error('Mesaj gönderilirken bir hata oluştu.');
-        }
-
-        const data = await response.json();
-        const newMessageData = {
-          id: data.data.id,
-          sender: {
-            id: data.data.user_id,
-            username: user.username, 
-          },
-          text: data.data.message_text,
-          sendTime: data.data.sent_time,
+        const message = {
+            senderId: user.id, // Kullanıcı ID'si AuthContext'ten alınır
+            eventId: eventId,
+            messageText: newMessage,
+            sendTime: new Date().toISOString(),
         };
-        setMessages((prevMessages) => [...prevMessages, newMessageData]);
-        setNewMessage('');
-      } catch (err) {
-        setError(err.message);
-      }
+
+        try {
+            const response = await fetch(`http://localhost:3000/api/message/send-message`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authToken}`,
+                },
+                body: JSON.stringify(message),
+            });
+
+            if (!response.ok) {
+                throw new Error('Mesaj gönderilirken bir hata oluştu.');
+            }
+
+            const data = await response.json();
+            console.log("Yeni mesaj API yanıtı:", data);
+
+            const newMessageData = {
+                id: data.id || data.data.id, // Mesaj ID
+                sender: {
+                    id: user.id, // Gönderici ID
+                    username: user.username, // Gönderici kullanıcı adı
+                },
+                message_text: data.message_text || data.data.message_text, // Mesaj metni
+                sent_time: data.sent_time || data.data.sent_time, // Gönderim zamanı
+            };
+
+            setMessages((prevMessages) => [...prevMessages, newMessageData]);
+            setNewMessage(''); // Mesaj kutusunu temizle
+        } catch (err) {
+            setError(err.message);
+        }
     }
-  };
+};
 
   if (loading) {
     return <div>Yükleniyor...</div>;

@@ -1,38 +1,37 @@
 .profileHeader {
-  max-width: 1000px; /* Genişlik artırıldı */
+  max-width: 100vw;
   margin: 20px auto;
   text-align: center;
 }
 
 .profileContainer {
   display: flex;
-  max-width: 1000px; /* Genişlik artırıldı */
-  margin: 0 auto;
-  padding: 20px 60px; /* Sağ ve sol boşluk artırıldı */
-  gap: 60px; /* Aradaki boşluk artırıldı */
+  width: 90vw;
+  padding: 0;
+  gap: 60px;
 }
 
 .profileDetails {
   flex: 1;
   border-right: 1px solid #ccc;
-  padding-right: 100px; /* Sağ boşluk artırıldı */
+  padding-right: 50px;
 }
 
 .profilePicture {
-  width: 180px; /* Resim boyutu artırıldı */
+  width: 180px;
   height: 180px;
   border-radius: 50%;
   margin-bottom: 20px;
 }
 
 .userInfo p {
-  margin: 10px 0; /* Her bir bilgi arasında boşluk artırıldı */
+  margin: 10px 0;
 }
 
 .editProfileButton {
   display: block;
   margin-top: 20px;
-  padding: 12px 20px; /* Buton boyutu büyütüldü */
+  padding: 12px 20px;
   background-color: #007bff;
   color: #fff;
   border: none;
@@ -47,13 +46,13 @@
 
 .userEvents {
   flex: 2;
-  padding-left: 100px; /* Sol boşluk artırıldı */
+  padding-left: 20px;
 }
 
 .eventList {
   display: flex;
   flex-direction: column;
-  gap: 20px; /* Etkinlikler arası boşluk artırıldı */
+  gap: 20px;
   margin-top: 10px;
 }
 
@@ -95,7 +94,7 @@
 }
 
 .eventAddButton button {
-  padding: 12px 20px; /* Buton boyutu büyütüldü */
+  padding: 12px 20px;
   background-color: #28a745;
   color: #fff;
   border: none;
@@ -125,10 +124,67 @@
   margin-top: 10px;
 }
 
+.userPoints, .createEventButtonContainer, .addInterestButtonContainer {
+  width: 100%;
+  margin-bottom: 10px; /* Butonlar arasına küçük boşluk ekledik */
+}
+
 .userPoints {
-  margin: 20px 0;
   padding: 15px;
   border: 1px solid #ddd;
   background: #f9f9f9;
   border-radius: 5px;
+}
+
+.createEventButton, .addInterestButton {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%; /* Butonları aynı genişlikte yapıyoruz */
+}
+
+.createEventButton {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.createEventButton:hover {
+  background-color: #218838;
+}
+
+.addInterestButton {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.addInterestButton:hover {
+  background-color: #0056b3;
+}
+
+.createEventButtonContainer, .addInterestButtonContainer {
+  text-align: center;
+}
+/* Actions kısmı */
+.actions {
+  display: flex;
+  justify-content: flex-start; /* Kısımları sola çekmek için */
+  gap: 10px; /* İstenilen aralığı ekle */
+  width: 100%;
+}
+
+.actions .section {
+  flex: 1; /* Eşit genişlikte olması için */
+  padding: 10px;
+}
+
+.actions .section h3 {
+  margin: 0;
+  color: #007bff;
+  font-size: 18px;
+}
+
+.actions .section p {
+  margin: 5px 0;
+  color: #333;
 }

@@ -106,7 +106,7 @@ function EventDetail() {
                 const userData = await userResponse.json();
                 const totalPoints = userData.points.reduce((total, item) => total + item.points, 0);
                 setUserPoints(totalPoints);  
-                navigate('/profile'); // Güncel puanları global state'e set et
+                navigate(`/event/${id}`);  // Güncel puanları global state'e set et
             } else {
                 console.error("Puanlar alınamadı");
             }

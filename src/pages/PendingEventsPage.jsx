@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PendingEvents from '../components/PendingEvents.jsx';
 import { useAuth } from '../AuthContext';
+import '../styles/pending.module.css'
 
 function PendingEventsPage() {
   const [events, setEvents] = useState([]);

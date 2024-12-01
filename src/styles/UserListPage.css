@@ -4,6 +4,7 @@
     font-family: 'Arial', sans-serif;
     background-color: #f8f9fa;
     min-height: 100vh;
+    
   }
   
   .user-list-title {
@@ -74,43 +75,92 @@
 .pagination-button:hover {
   background-color: #0056b3;
 }
-/* Modal */
+
+.modal-close:hover {
+  background-color: #0056b3;
+}
+/* Modal Backdrop */
 .modal-backdrop {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  z-index: 999;
+  transition: opacity 0.3s ease;
 }
 
 .modal {
+  display: block; /* Flex veya Grid yerine block kullanarak her satır alt alta gelir */
+  width: 90%; /* Modal genişliği */
+  max-width: 600px;
+  background-color: white;
   padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-  max-width: 400px;
-  width: 100%;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin: 0 auto; /* Ortada konumlandırma */
 }
+
+.pagination-dots {
+  margin: 0 5px;
+  padding: 8px 12px;
+  color: #0056b3;
+  cursor: default;}
+  
+/* Modal Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Modal Title */
 .modal h2 {
+  font-size: 1.5rem;
+  color: #333;
+  font-weight: 600;
   margin-bottom: 20px;
+  text-align: center; /* Başlık ortalanmış */
 }
 
+/* Modal Content */
+.modal p {
+  font-size: 1rem;
+  color: #555;
+  margin: 12px 0;
+  line-height: 1.6;
+  display: block; /* Alt alta sıralanmasını sağlar */
+}
+
+
+/* Modal Strong Text */
+.modal p strong {
+  font-weight: 700;
+  color: #333;
+  margin-right: 5px; /* Bilgilerin daha düzenli görünmesini sağlar */
+  line-height: 1.6;
+  display: block; /* Alt alta sıralanmasını sağlar */
+}
+/* Modal Close Button */
 .modal-close {
-  margin-top: 20px;
-  padding: 10px 20px;
   background-color: #007bff;
-  color: white;
+  color: #fff;
   border: none;
-  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 4px;
   cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
 }
 
-.modal-close:hover {
-  background-color: #0056b3;
-}
+
 
   

@@ -1,0 +1,200 @@
+/* category.module.css */
+
+/* Genel Sayfa Düzeni */
+.container {
+    max-width: 100vw;
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+  }
+  
+  h1, h2 {
+    color: #333;
+  }
+  
+  h2 {
+    margin-top: 30px;
+  }
+  
+  /* Hata Mesajları */
+  .error {
+    color: red;
+    font-weight: bold;
+  }
+  
+  /* Modal Stili */
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modalContent {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+  }
+  
+  .modalContent h3 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  /* Kategori ve Alt Kategori Tablosu */
+  .table {
+    width: 90vw;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  
+  .table th, .table td {
+    text-align: left;
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .table thead {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .table tbody tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  button {
+    cursor: pointer;
+  }
+  
+  /* Form Input Alanları */
+  input[type="text"], select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+  }
+  
+  /* Eylem Butonları */
+  button {
+    background-color: #007bff;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Silme Butonları */
+  button.delete {
+    background-color: #bd3644;
+  }
+  
+  button.delete:hover {
+    background-color: #c82333;
+  }
+  
+  /* Modal Butonları */
+  button[type="submit"] {
+    background-color: #0e704c;
+    padding: 10px;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #0b5b3b;
+  }
+  
+  /* Kapat Butonu */
+  button[type="button"] {
+    background-color: #6c757d;
+  }
+  
+  button[type="button"]:hover {
+    background-color: #5a6268;
+  }
+  /* Genel buton stilleri */
+.action-button {
+    background-color: #007bff;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 10px; /* Butonlar arasına sağ boşluk ekledik */
+    margin-bottom: 10px; /* Butonların altına boşluk ekledik */
+  }
+  
+  .action-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .action-button.delete {
+    background-color: #dc3545;
+  }
+  
+  .action-button.delete:hover {
+    background-color: #c82333;
+  }
+  
+  /* Kategori ve alt kategori ekleme butonları arasına daha fazla boşluk */
+  button {
+    margin-right: 15px; /* Butonlar arasına sağ boşluk ekliyoruz */
+    margin-bottom: 15px; /* Alt boşluk ekliyoruz */
+  }
+  /* Kategoriler ve Alt Kategoriler İçin Başlıklar */
+  h1, h2 {
+    font-size: 1.5rem;
+  }
+  
+  /* Kategori ve Alt Kategori Modal Başlıkları */
+  h3 {
+    text-align: center;
+    font-size: 1.2rem;
+  }
+  
+  /* Sayfalama */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+  }
+  
+  .pagination-button {
+    padding: 12px 20px;
+    margin: 0 5px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .pagination-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .pagination-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  

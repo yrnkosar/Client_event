@@ -48,3 +48,52 @@
     font-weight: bold;
   }
   
+  /* Modal Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Modal Title */
+.modal h2 {
+  font-size: 1.5rem;
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-align: center; /* Başlık ortalanmış */
+}
+
+/* Modal Content */
+.modal p {
+  font-size: 1rem;
+  color: #555;
+  margin: 12px 0;
+  line-height: 1.6;
+  display: block; /* Alt alta sıralanmasını sağlar */
+}
+
+
+/* Modal Strong Text */
+.modal p strong {
+  font-weight: 700;
+  color: #333;
+  margin-right: 5px; /* Bilgilerin daha düzenli görünmesini sağlar */
+  line-height: 1.6;
+  display: block; /* Alt alta sıralanmasını sağlar */
+}
+/* Modal Close Button */
+.modal-close {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}

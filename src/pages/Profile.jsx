@@ -6,6 +6,7 @@ import { Link,useParams, useNavigate } from 'react-router-dom';
 import styles from '../styles/Profile.module.css';
 import MapComponent from '../components/MapComponent.jsx';
 import UserPoints from '../components/UserPoints'; // Puan bileşenini içe aktar
+import '../styles/Profile.module.css';
 
 const Profile = () => {
   const { id } = useParams(); // Dinamik user ID
@@ -131,28 +132,28 @@ const Profile = () => {
                 <button className={styles.editProfileButton}>Profili Düzenle</button>
               </Link>
             </div>
-              {/* Kullanıcı Puanları */}
-            <div className={styles.userPoints}>
-              <UserPoints />
-            </div>
+            <div className={styles.userActions}>
+  <div className={styles.userPoints}>
+    <UserPoints />
+  </div>
 
-             {/* Add the Create Event Button */}
-             <div className={styles.createEventButtonContainer}>
-              <button
-                className={styles.createEventButton}
-                onClick={() => navigate('/event-add')} // Navigate to the event creation page
-              >
-                Etkinlik Oluştur
-              </button>
-            </div>
+  <div className={styles.createEventButtonContainer}>
+    <button
+      className={styles.createEventButton}
+      onClick={() => navigate('/event-add')} // Navigate to the event creation page
+    >
+      Etkinlik Oluştur
+    </button>
+  </div>
 
-            <div className={styles.addInterestButtonContainer}>
-  <button
-    className={styles.addInterestButton}
-    onClick={() => navigate('/select-interests')}
-  >
-    İlgi Alanı Ekle
-  </button>
+  <div className={styles.addInterestButtonContainer}>
+    <button
+      className={styles.addInterestButton}
+      onClick={() => navigate('/select-interests')}
+    >
+      İlgi Alanı Ekle
+    </button>
+  </div>
 </div>
               {/* Katıldığı Etkinlikler */}
             <div className={styles.userEvents}>

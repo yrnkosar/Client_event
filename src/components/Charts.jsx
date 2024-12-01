@@ -128,10 +128,6 @@ function Charts() {
         <h3>Yaş ve Cinsiyet Demografisi</h3>
         <Bar data={demographicsData} /> {/* Bar chart for demographics */}
       </div>
-      <div style={styles.userPointsContainer}>
-        <h3>Kullanıcı Puanları</h3>
-        <p>Toplam Puan: {userPoints}</p>
-      </div>
     </div>
   );
 }

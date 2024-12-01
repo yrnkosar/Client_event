@@ -19,7 +19,6 @@ import ResetPassword from './pages/ResetPassword.jsx';
 import ProfileEditForm from './components/ProfileEditForm.jsx';
 import SelectInterests from './pages/SelectInterests.jsx';
 import CategoryPage from './pages/CategoryPage'; // Kategori ekleme sayfasını dahil ettik
-import ReportsPage from './pages/ReportsPage'; // Aynı şekilde raporlar vb.
 import Chat from './components/Chat';
 
 function App() {
@@ -46,7 +45,6 @@ function App() {
           <Route path="/profile/edit" element={<ProfileEditForm />} />
           <Route path="/select-interests" element={<SelectInterests />} />
           <Route path="/admin/categories" element={<CategoryPage />} />
-          <Route path="/admin/reports" element={<ReportsPage />} />
          </Routes>
       </Router>
     </AuthProvider>
